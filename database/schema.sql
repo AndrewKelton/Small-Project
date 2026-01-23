@@ -1,0 +1,35 @@
+CREATE DATABASE SMALLPROJECT;
+USE SMALLPROJECT;
+
+-- users table
+CREATE TABLE `SMALLPROJECT`.`Users`
+(
+    `ID` INT NOT NULL AUTO_INCREMENT,
+    `Username` VARCHAR(50) NOT NULL,
+    `Password` VARCHAR(256) NOT NULL,
+    `FirstName` VARCHAR(50) NOT NULL DEFAULT '',
+    `LastName` VARCHAR(50) NOT NULL DEFAULT '',
+    
+    PRIMARY KEY (`ID`),
+    UNIQUE(`Username`)
+
+) ENGINE = InnoDB;
+
+-- contacts table
+CREATE TABLE `SMALLPROJECT`.`Contacts`
+(
+    `ID` INT NOT NULL AUTO_INCREMENT,
+    `UserID` INT NOT NULL,
+    `FirstName` VARCHAR(50) NOT NULL DEFAULT '',
+    `LastName` VARCHAR(50) NOT NULL DEFAULT '',
+    `Email` VARCHAR(50) NOT NULL DEFAULT '',
+    `Phone` VARCHAR(50) NOT NULL DEFAULT '',
+
+    PRIMARY KEY (`ID`),
+
+    CONSTRAINT fk_contacts_users
+        FOREIGN KEY(`UserID`)
+        REFERENCES `Users`(`ID`)
+        ON DELETE CASCADE
+
+) ENGINE = InnoDB;
