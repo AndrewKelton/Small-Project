@@ -6,7 +6,7 @@ let firstName = "";
 let lastName = "";
 
 // Function to handle user login
-function doLogin() {
+async function doLogin() {
   userId = 0;
   firstName = "";
   lastName = "";
@@ -20,37 +20,41 @@ function doLogin() {
   let jsonPayload = JSON.stringify( tmp );
   let url = urlBase + '/Login' + extension;
   
-  let xhr = new XMLHttpRequest();
-  xhr.open("POST", url, true);
-  xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-
-  try {
-		xhr.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200) {
-				let jsonObject = JSON.parse( xhr.responseText );
-				userId = jsonObject.id;
-
-				if( userId < 1 ) {
-					document.getElementById("loginResult").innerHTML = "User/Password combination incorrect";
-					console.log("Login failed: " + loginName + " " + loginPassword);
-					return;
-				}
-		
-				firstName = jsonObject.firstName;
-				lastName = jsonObject.lastName;
-
-        console.log("Login successful: " + firstName + " " + lastName);
-
-				saveCookie();
-	
-				window.location.href = "index.html";
-			}
-		};
-		xhr.send(jsonPayload);
-	}
-	catch(err) {
-		document.getElementById("loginResult").innerHTML = err.message;
-	}
+  console.log("Login payload:", jsonPayload);
+  console.log("URL:", url);
+  
+  /* Uncomment this when php is ready */
+  // let xhr = new XMLHttpRequest();
+  // xhr.open("POST", url, true);
+  // xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+  // 
+//   try {
+// 		xhr.onreadystatechange = function() {
+// 			if (this.readyState == 4 && this.status == 200) {
+// 				let jsonObject = JSON.parse( xhr.responseText );
+// 				userId = jsonObject.id;
+// 
+// 				if( userId < 1 ) {
+// 					document.getElementById("loginResult").innerHTML = "User/Password combination incorrect";
+// 					console.log("Login failed: " + loginName + " " + loginPassword);
+// 					return;
+// 				}
+// 		
+// 				firstName = jsonObject.firstName;
+// 				lastName = jsonObject.lastName;
+// 
+//         console.log("Login successful: " + firstName + " " + lastName);
+// 
+// 				saveCookie();
+// 	
+// 				window.location.href = "index.html";
+// 			}
+// 		};
+// 		xhr.send(jsonPayload);
+// 	}
+// 	catch(err) {
+// 		document.getElementById("loginResult").innerHTML = err.message;
+// 	}
 }
 
 function saveCookie() {
