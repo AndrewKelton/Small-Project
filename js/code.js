@@ -10,14 +10,14 @@ function doLogin() {
   userId = 0;
   firstName = "";
   lastName = "";
-  username = "";
   
-  const loginName = document.getElementById("loginName").value;
-  const loginPassword = document.getElementById("loginPassword").value;
+  let loginName = document.getElementById("loginName").value;
+  let loginPassword = document.getElementById("loginPassword").value;
 
   document.getElementById("loginResult").innerHTML = "";
 
   let tmp = { login: loginName, password: loginPassword };
+  
   let jsonPayload = JSON.stringify( tmp );
   let url = urlBase + '/Login' + extension;
   
@@ -60,11 +60,61 @@ function doLogin() {
 
 // Function to handle user signup
 function doSignup() {
-  userId = 0;
-  firstName = "";
-  lastName = "";
-  username = "";
+  firstName = document.getElementById("firstName").value;
+  lastName = document.getElementById("lastName").value;
+
+  let username = document.getElementById("username").value;
+  let password = document.getElementById("password").value;
+
+  document.getElementById("signupResult").innerHTML = "";
+
+  let tmp = { firstName: firstName, lastName: lastName, login: username, password: password };
+
+  let jsonPayload = JSON.stringify(tmp);
+  let url = urlBase + '/Signup' + extension;
+
+  console.log("Signup payload:", jsonPayload);
+  console.log("URL:", url);
+  
+  /* Uncomment this when php is ready */
+  // let xhr = new XMLHttpRequest();
+  // xhr.open("POST", url, true);
+  // xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+  // 
+//   try {
+// 		xhr.onreadystatechange = function() {
+// 			if (this.readState != 4) {
+//        return
+//      }
+// 
+// 			if( this.status = 409 ) {
+// 			  document.getElementById("signupResult").innerHTML = "User already exists";
+// 				 console.log("Signup failed: " + username + " " + password);
+// 				return;
+// 			}
+// 		
+//        console.log("Signup successful: " + firstName + " " + lastName);
+// 
+// 
+//  			  if (this.status == 200) {
+//           let jsonObject = JSON.parse(xhr.responseText);
+//           userId = jsonObject.id;
+//           document.getElementById("signupResult").innerHTML = "User added";
+//           firstName = jsonObject.firstName;
+//           lastName = jsonObject.lastName;
+//           saveCookie();
+//      }
+// 	
+// 				window.location.href = "index.html";
+// 			}
+// 		};
+// 		xhr.send(jsonPayload);
+// 	}
+// 	catch(err) {
+// 		document.getElementById("signupResult").innerHTML = err.message;
+// 	}
 }
+
 
 // Function to save user info in a cookie
 function saveCookie() {
@@ -73,3 +123,4 @@ function saveCookie() {
 	date.setTime(date.getTime()+(minutes*60*1000));	
 	document.cookie = "firstName=" + firstName + ",lastName=" + lastName + ",userId=" + userId + ";expires=" + date.toGMTString();
 }
+
