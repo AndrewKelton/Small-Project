@@ -6,7 +6,7 @@ let firstName = "";
 let lastName = "";
 
 // Function to handle user login
-async function doLogin() {
+function doLogin() {
   userId = 0;
   firstName = "";
   lastName = "";
@@ -59,7 +59,7 @@ async function doLogin() {
 }
 
 // Function to handle user signup
-async function doSignup() {
+function doSignup() {
   userId = 0;
   firstName = "";
   lastName = "";
