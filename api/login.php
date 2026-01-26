@@ -2,10 +2,15 @@
     $inData = getRequestInfo();
 
     // Fill in with exact SQL database specs
-    $host = "localhost:8000";
-    $db = "XXXXXXX";
-    $user = "root";
-    $pwd = "XXXXXX";
+    // get from .env file
+    // $host = "localhost:8000";
+    // $db = "XXXXXXX";
+    // $user = "root";
+    // $pwd = "XXXXXX";
+    $host = getenv('DB_HOST');
+    $db = getenv('DB_NAME');
+    $user = getenv('DB_USER');
+    $pwd = getenv('DB_PASS');
 
     $ID = 0;
     $firstName = "";
