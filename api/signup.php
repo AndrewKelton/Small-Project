@@ -63,5 +63,22 @@
     $stmt->close();
     $conn->close();
 
+    function getRequestInfo(){
+        return json_decode(file_get_contents('php://input'), true);
+    }
 
+    function sendResultInfoAsJson($obj){
+        header('Content-type: application/json');
+        echo $obj;
+    }
+
+    function returnWithInfo($contacts){
+        $retValue = '{"Contacts":' . json_encode($contacts) . ',"Error": ""}';
+        sendResultInfoAsJson($retValue);
+    }
+
+    function returnWithError($msg){
+        $retValue = '{"Error":"' . $msg . '"}';
+        sendResultInfoAsJson($retValue);
+    }
 ?>
