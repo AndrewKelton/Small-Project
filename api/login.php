@@ -1,4 +1,4 @@
-<?php>
+<?php
     $inData = getRequestInfo();
 
     // Fill in with exact SQL database specs
