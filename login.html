@@ -12,23 +12,24 @@
 </head>
 
 <body>
-  <h1>Group 7 Contact Book Login</h1>
+  <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <!-- <h1>Group 7 Contact Book Login</h1> -->
 
-  <form id="login">
-    <!-- <label for id="login" class="form-label">Login</label> -->
-    <div class="mb-3">
-      <label for="loginName" class="form-label">Username</label>
-      <input type="text" class="form-control" id="loginName" name="login" aria-describedby="username" required>
-      <!-- <div id="username" class="form-text"></div> -->
-    </div>
-    <div class="mb-3">
-      <label for="loginPassword" class="form-label">Password</label>
-      <input type="password" class="form-control" id="loginPassword" name="password" required>
-    </div>
+    <form id="login" class="w-25 p-3">
+      <!-- <label for id="login" class="form-label">Login</label> -->
+      <div class="mb-3">
+        <label for="loginName" class="form-label">Username</label>
+        <input type="text" class="form-control" id="loginName" name="login" aria-describedby="username" required>
+        <!-- <div id="username" class="form-text"></div> -->
+      </div>
+      <div class="mb-3">
+        <label for="loginPassword" class="form-label">Password</label>
+        <input type="password" class="form-control" id="loginPassword" name="password" required>
+      </div>
 
-    <button type="button" class="btn btn-primary" onclick="doLogin()">Login</button>
-    <span class="text" style="color:rgb(203, 55, 21);" id="loginResult"></span>
-  </form>
-
+      <button type="button" class="btn btn-primary" onclick="doLogin()">Login</button>
+      <span class="text" style="color:rgb(203, 55, 21);" id="loginResult"></span>
+    </form>
+  </div>
 </body> 
 </html>
