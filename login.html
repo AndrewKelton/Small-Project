@@ -13,17 +13,17 @@
 
 <body>
   <h1>Group 7 Contact Book Login</h1>
-  
+
   <form id="login">
-    <label for id="login" class="form-label">Login</label>
+    <!-- <label for id="login" class="form-label">Login</label> -->
     <div class="mb-3">
-      <!-- <label for="loginName" class="form-label">Username</label> -->
-      <input type="text" class="form-control" id="loginName" placeholder="username" name="login" aria-describedby="username" required>
+      <label for="loginName" class="form-label">Username</label>
+      <input type="text" class="form-control" id="loginName" name="login" aria-describedby="username" required>
       <!-- <div id="username" class="form-text"></div> -->
     </div>
     <div class="mb-3">
-      <!-- <label for="loginPassword" class="form-label">Password</label> -->
-      <input type="password" class="form-control" id="loginPassword" placeholder="password" name="password" required>
+      <label for="loginPassword" class="form-label">Password</label>
+      <input type="password" class="form-control" id="loginPassword" name="password" required>
     </div>
 
     <button type="button" class="btn btn-primary" onclick="doLogin()">Login</button>
