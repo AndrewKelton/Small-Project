@@ -71,7 +71,7 @@ function doLogin() {
 
 				saveCookie();
 	
-				window.location.href = "index.html";
+				window.location.href = "contacts.html";
 			}
 		};
 		xhr.send(jsonPayload);
