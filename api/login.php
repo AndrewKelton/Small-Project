@@ -1,12 +1,21 @@
 <?php
+header("Content-Type: application/json");
+
+    // Load .env file
+    $envFile = __DIR__ . '/../.env';
+    if (file_exists($envFile)) {
+        $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        foreach ($lines as $line) {
+            if (strpos($line, '=') !== false && strpos($line, '#') !== 0) {
+                list($key, $value) = explode('=', $line, 2);
+                putenv(trim($key) . '=' . trim($value));
+            }
+        }
+    }
+
     $inData = getRequestInfo();
 
     // Fill in with exact SQL database specs
-    // get from .env file
-    // $host = "localhost:8000";
-    // $db = "XXXXXXX";
-    // $user = "root";
-    // $pwd = "XXXXXX";
     $host = getenv('DB_HOST');
     $db = getenv('DB_NAME');
     $user = getenv('DB_USER');
@@ -26,6 +35,13 @@
     }
     else {
         $stmt = $conn->prepare("SELECT ID, FirstName, LastName FROM Users WHERE (Login=? AND Password=?)");
+        if (!$stmt) {
+            echo json_encode([
+                "id" => 0,
+                "error" => $conn->error
+            ]);
+            exit();
+        }
         $stmt->bind_param("ss", $inData["login"], $inData["password"]);
         $stmt->execute();
         $result = $stmt->get_result();

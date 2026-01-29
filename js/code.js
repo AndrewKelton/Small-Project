@@ -9,6 +9,25 @@ let userId = 0;
 let firstName = "";
 let lastName = "";
 
+// Attach event listeners when the page loads
+document.addEventListener("DOMContentLoaded", function() {
+  const loginForm = document.getElementById("login");
+  if (loginForm) {
+    loginForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+      doLogin();
+    });
+  }
+
+  const signupForm = document.getElementById("signup");
+  if (signupForm) {
+    signupForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+      doSignup();
+    });
+  }
+});
+
 // Function to handle user login
 function doLogin() {
   userId = 0;
@@ -23,43 +42,46 @@ function doLogin() {
   let tmp = { login: loginName, password: loginPassword };
   
   let jsonPayload = JSON.stringify( tmp );
-  let url = urlBase + '/Login' + extension;
+  let url = urlBase + 'api/login' + extension;
   
-  console.log("Login payload:", jsonPayload);
-  console.log("URL:", url);
+  // console.log("Login payload:", jsonPayload);
+  // console.log("URL:", url);
   
   /* Uncomment this when php is ready */
-//   let xhr = new XMLHttpRequest();
-//   xhr.open("POST", url, true);
-//   xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-//   
-//   try {
-// 		xhr.onreadystatechange = function() {
-// 			if (this.readyState == 4 && this.status == 200) {
-// 				let jsonObject = JSON.parse( xhr.responseText );
-// 				userId = jsonObject.id;
-// 
-// 				if( userId < 1 ) {
-// 					document.getElementById("loginResult").innerHTML = "User/Password combination incorrect";
-// 					console.log("Login failed: " + loginName + " " + loginPassword);
-// 					return;
-// 				}
-// 		
-// 				firstName = jsonObject.firstName;
-// 				lastName = jsonObject.lastName;
-// 
-//         console.log("Login successful: " + firstName + " " + lastName);
-// 
-// 				saveCookie();
-// 	
-// 				window.location.href = "index.html";
-// 			}
-// 		};
-// 		xhr.send(jsonPayload);
-// 	}
-// 	catch(err) {
-// 		document.getElementById("loginResult").innerHTML = err.message;
-// 	}
+  let xhr = new XMLHttpRequest();
+  xhr.open("POST", url, true);
+  xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+
+  console.log(xhr.responseText);
+  
+  try {
+		xhr.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				let jsonObject = JSON.parse(xhr.responseText);
+				userId = jsonObject.id;
+
+				if( userId < 1 ) {
+					document.getElementById("loginResult").innerHTML = "User/Password combination incorrect";
+					console.log("Login failed: " + loginName + " " + loginPassword);
+					return;
+				}
+		
+				firstName = jsonObject.firstName;
+				lastName = jsonObject.lastName;
+
+        console.log("Login successful: " + firstName + " " + lastName);
+
+				saveCookie();
+	
+				window.location.href = "contacts.html";
+			}
+		};
+    console.log("Sending:", jsonPayload);
+		xhr.send(jsonPayload);
+	}
+	catch(err) {
+		document.getElementById("loginResult").innerHTML = err.message;
+	}
 }
 
 // Function to handle user signup
@@ -75,45 +97,55 @@ function doSignup() {
   let tmp = { firstName: firstName, lastName: lastName, login: username, password: password };
 
   let jsonPayload = JSON.stringify(tmp);
-  let url = urlBase + '/Signup' + extension;
+  let url = urlBase + 'api/signup' + extension;
 
   console.log("Signup payload:", jsonPayload);
   console.log("URL:", url);
   
   /* Uncomment this when php is ready */
-//   let xhr = new XMLHttpRequest();
-//   xhr.open("POST", url, true);
-//   xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-//   
-//   try {
-// 		xhr.onreadystatechange = function() {
-// 			if (this.readState != 4) {
-//         return
-//       }
-// 
-// 			if( this.status = 409 ) {
-// 			  document.getElementById("signupResult").innerHTML = "User already exists";
-// 				 console.log("Signup failed: " + username + " " + password);
-// 				return;
-// 			}
-// 		
-//       console.log("Signup successful: " + firstName + " " + lastName);
-// 
-// 
-//       if (this.status == 200) {
-//         let jsonObject = JSON.parse(xhr.responseText);
-//         userId = jsonObject.id;
-//         document.getElementById("signupResult").innerHTML = "User added";
-//         firstName = jsonObject.firstName;
-//         lastName = jsonObject.lastName;
-//         saveCookie();
-//       }
-// 		};
-// 		xhr.send(jsonPayload);
-//     
-//     } catch(err) {
-//       document.getElementById("signupResult").innerHTML = err.message;
-//     }
+  let xhr = new XMLHttpRequest();
+  xhr.open("POST", url, true);
+  xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+  
+  try {
+		xhr.onreadystatechange = function() {
+			if (this.readyState != 4) {
+        return
+      }
+
+      if (this.status == 200) {
+        let jsonObject = JSON.parse(xhr.responseText);
+        
+        // check if error in response
+        if (jsonObject.error && jsonObject.error !== "") {
+          document.getElementById("signupResult").innerHTML = jsonObject.error;
+          console.log("Signup failed: " + jsonObject.error);
+          return;
+        }
+        
+        userId = jsonObject.id;
+        document.getElementById("signupResult").innerHTML = "User added successfully!";
+        firstName = jsonObject.firstName;
+        lastName = jsonObject.lastName;
+        console.log("Signup successful: " + firstName + " " + lastName);
+        saveCookie();
+        // window.location.href = "contacts.html";
+      }
+      else if (this.status == 400) {
+        let jsonObject = JSON.parse(xhr.responseText);
+        document.getElementById("signupResult").innerHTML = jsonObject.Error || "Invalid input";
+        console.log("Signup failed: " + this.status);
+      }
+      else {
+        document.getElementById("signupResult").innerHTML = "An error occurred";
+        console.log("Signup error: " + this.status);
+      }
+		};
+		xhr.send(jsonPayload);
+    
+    } catch(err) {
+      document.getElementById("signupResult").innerHTML = err.message;
+    }
 }
 
 // Function to handle user logout
