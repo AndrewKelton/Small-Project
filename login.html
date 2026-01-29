@@ -1,30 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 
-</html>
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Group 7 Login</title>
-  <link rel="stylesheet" href="css/login.css" />
   <script type="text/javascript" src="js/code.js"></script>
-  <link href='https://fonts.googleapis.com/css?family=Arial' rel='stylesheet'>
-  <link href='https://fonts.googleapis.com/css?family=Arial' rel='stylesheet'>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 
 <body>
-  <h1>Group 7 Contact Book Login</h1>
-  <br /><br /><br /><br />
-  <div class="form" id="wholeForm">
-    <form id="login" class="input-form">
-      <input type="text" class="input-field" id="loginName" placeholder="username" name="username" required />
-        <!-- pattern="(?=.*[a-zA-Z])[a-zA-Z0-9-_]{3,18}$" /> -->
-      <input type="password" class="input-field" id="loginPassword" placeholder="password" name="password" required />
-        <!-- pattern="(?=.*\d)(?=.*[A-Za-z])(?=.*[!@#$%^&*]).{8,32}" /> -->
-      <button type="button" id="loginButton" class="submit-btn" onclick="doLogin()">Login</button>
-      <span class="text" id="loginResult"></span>
+  <a href="index.html" class="btn btn-secondary" style="position: absolute; top: 20px; left: 20px;">Back</a>
+  <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <!-- <h1>Group 7 Contact Book Login</h1> -->
+
+    <form id="login" class="w-25 p-3">
+      <!-- <label for id="login" class="form-label">Login</label> -->
+      <div class="mb-3">
+        <label for="loginName" class="form-label">Username</label>
+        <input type="text" class="form-control" id="loginName" name="login" aria-describedby="username" required>
+        <!-- <div id="username" class="form-text"></div> -->
+      </div>
+      <div class="mb-3">
+        <label for="loginPassword" class="form-label">Password</label>
+        <input type="password" class="form-control" id="loginPassword" name="password" required>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Login</button>
+      <span class="text" style="color:rgb(203, 55, 21);" id="loginResult"></span>
     </form>
-    </div>
+  </div>
 </body> 
 </html>
