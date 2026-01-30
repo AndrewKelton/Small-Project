@@ -88,7 +88,7 @@ function doLogin() {
 function doSignup() {
   firstName = document.getElementById("firstName").value;
   lastName = document.getElementById("lastName").value;
-  let email = document.getElemebtById("email").value; // add this for now, not clear if needed
+  let email = document.getElementById("email").value; // add this for now, not clear if needed
   let username = document.getElementById("username").value;
   let password = document.getElementById("password").value;
 
