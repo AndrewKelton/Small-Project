@@ -77,6 +77,47 @@ git merge <your-branch-name>
 
 Alternatively, you can merge through the pull request interface on GitHub.
 
+## Testing Features in Staging
+
+Our `staging` branch is used for live deployment testing. Here's how to test your feature branches before merging to `dev`:
+
+### Testing Your Feature Branch in Staging
+
+1. **Push your feature branch to the staging branch:**
+   ```bash
+   git checkout staging
+   git merge <your-feature-branch>
+   git push origin staging
+   ```
+
+2. **Test your changes on the live server:**
+   - Visit `http://209.97.158.98` to see your changes deployed
+   - The deployment happens automatically via GitHub Actions
+
+3. **Once testing is complete, reset staging:**
+   ```bash
+   git checkout staging
+   git reset --hard origin/dev
+   git push origin staging --force
+   ```
+
+### ⚠️ CRITICAL STAGING RULES
+
+**NEVER do the following with the staging branch:**
+- ❌ NEVER merge `staging` into `dev`
+- ❌ NEVER merge `staging` into `main`
+- ❌ NEVER open a Pull Request FROM `staging`
+- ❌ NEVER keep experimental code in `staging` permanently
+
+**Why?** The `staging` branch is a temporary testing environment. It should mirror `dev` when not actively testing features.
+
+### Staging Workflow Best Practices
+
+1. `staging` should normally mirror `dev`
+2. Only merge feature branches into `staging` temporarily for testing
+3. Always reset `staging` back to `dev` after testing
+4. Only merge tested features from your feature branch into `dev`, not from `staging`
+
 ## Using VS Code Git Control
 
 VS Code has built-in git tools that make version control easier without using the terminal:
@@ -118,4 +159,3 @@ VS Code has built-in git tools that make version control easier without using th
 4. Select `dev` as the base branch when prompted
 
 ---
-
