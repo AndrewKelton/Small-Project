@@ -34,6 +34,9 @@ jobs:
         ssh -o StrictHostKeyChecking=no root@$SERVER_IP << 'EOF'
           # Navigate to web root or create a project directory
           cd /var/www/html
+
+          # Fix git ownership issue
+          git config --global --add safe.directory /var/www/html
           
           # Check if this is already a git repo
           if [ -d ".git" ]; then
