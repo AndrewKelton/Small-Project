@@ -88,8 +88,8 @@
         echo $obj;
     }
 
-    function returnWithInfo($contacts){
-        $retValue = '{"Contacts":' . json_encode($contacts) . ',"Error": ""}';
+    function returnWithInfo($firstName, $lastName, $id){
+        $retValue = '{"firstName":"' . $firstName . '","lastName":"' . $lastName . '","id":' . $id . ',"Error": ""}';
         sendResultInfoAsJson($retValue);
     }
 
