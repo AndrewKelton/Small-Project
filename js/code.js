@@ -2,7 +2,7 @@
 
 /* Test this locally with python -m http.server 3000 */
 
-const urlBase = 'http://localhost:3000/'; // change this to server address
+const urlBase = 'http://cop4331-pal.com/'; // change this to server address
 const extension = '.php';
 
 let userId = 0;
