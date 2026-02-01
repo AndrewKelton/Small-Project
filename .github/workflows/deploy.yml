@@ -41,7 +41,8 @@ jobs:
           # Check if this is already a git repo
           if [ -d ".git" ]; then
             # Already a repo, just pull latest changes
-            git pull origin staging
+            git fetch origin staging
+            git reset --hard origin/staging
           else
             # Not a git repo yet - need to initialize
             # Option 1: Clear directory and clone (CAUTION: deletes existing files)
