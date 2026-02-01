@@ -11,6 +11,8 @@
         }
     }
 
+    require 'helpers.php';
+
     $inData = getRequestInfo();
 
     // Fill in with exact SQL database specs
@@ -18,10 +20,6 @@
     $db = getenv('DB_NAME');
     $user = getenv('DB_USER');
     $pwd = getenv('DB_PASS');
-    // $host = "localhost:8000";
-    // $db = "XXXXXXX";
-    // $user = "root";
-    // $pwd = "XXXXXX";
 
     // Sign-up parameters
     $firstName = $inData["firstName"];
@@ -49,7 +47,7 @@
 
     // Check password length
     if(strlen($password) < 5) {
-        returnWithError("Password but be at least 5 characters");
+        returnWithError("Password must be at least 5 characters");
         exit();
     }
 
@@ -61,40 +59,21 @@
 
     if ($result->num_rows > 0){
         returnWithError("Username already exists!");
+        $stmt->close();
+        $conn->close();
+        exit();
     }
-    else {
-        // Create new user
-        $stmt = $conn->prepare("INSERT INTO Users (FirstName, LastName, Login, Password) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("ssss", $firstName, $lastName, $login, $password);
 
-        if ($stmt->execute()){
-            $newUserID = $conn->insert_id;
-            returnWithInfo($firstName, $lastName, $newUserID);
-        }
-        else {
-            returnWithError("Error: Failed to create new account");
-        }
-    }
+    // Create new user
+    $stmt = $conn->prepare("INSERT INTO Users (FirstName, LastName, Login, Password) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("ssss", $firstName, $lastName, $login, $password);
+
+    if ($stmt->execute())
+        returnUserInfo( $conn->insert_id, $firstName, $lastName ); 
+    else 
+        returnWithError("Error: Failed to create new account");
 
     $stmt->close();
     $conn->close();
 
-    function getRequestInfo(){
-        return json_decode(file_get_contents('php://input'), true);
-    }
-
-    function sendResultInfoAsJson($obj){
-        header('Content-type: application/json');
-        echo $obj;
-    }
-
-    function returnWithInfo($contacts){
-        $retValue = '{"Contacts":' . json_encode($contacts) . ',"Error": ""}';
-        sendResultInfoAsJson($retValue);
-    }
-
-    function returnWithError($msg){
-        $retValue = '{"Error":"' . $msg . '"}';
-        sendResultInfoAsJson($retValue);
-    }
 ?>
