@@ -1,5 +1,18 @@
 <?php
-    
+    // Load .env file
+    $envFile = __DIR__ . '/../.env';
+    if (file_exists($envFile)) {
+        $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        foreach ($lines as $line) {
+            if (strpos($line, '=') !== false && strpos($line, '#') !== 0) {
+                list($key, $value) = explode('=', $line, 2);
+                putenv(trim($key) . '=' . trim($value));
+            }
+        }
+    }
+
+    require 'helpers.php';
+
     $inData = getRequestInfo(); 
 
     // Get DB credentials
@@ -21,20 +34,20 @@
         header('Content-type: text/plain');
         echo $conn->connect_error;
         exit();
-    } else {
-        // Create contact logic here
-        $stmt = $conn->prepare("INSERT INTO Contacts (UserID, FirstName, LastName, Email, Phone) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("issss", $userID, $firstName, $lastName, $email, $phone);
-
-        if ($stmt->execute() === TRUE) {
-            $contactID = $conn->insert_id;
-            returnWithInfo($contactID, $firstName, $lastName, $email, $phone);
-        } else {
-            http_response_code(400);
-        }
-        $stmt->close();
-        $conn->close();
     }
+
+    // Create contact logic here
+    $stmt = $conn->prepare("INSERT INTO Contacts (UserID, FirstName, LastName, Email, Phone) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("issss", $userID, $firstName, $lastName, $email, $phone);
+
+    if ($stmt->execute() === TRUE) {
+        $contactID = $conn->insert_id;
+        returnContactInfo($contactID, $firstName, $lastName, $email, $phone);
+    } else 
+        http_response_code(400);
+    
+    $stmt->close();
+    $conn->close();
 
     // Validation
     if (empty($firstName) || empty($lastName) || empty($userID)) {
@@ -42,25 +55,4 @@
         $conn->close();
         exit();
     }
-
-    // Helper functions
-    function getRequestInfo() {
-        return json_decode(file_get_contents('php://input'), true);
-    }
-
-    function sendResultInfoAsJson($obj) {
-        header('Content-type: application/json');
-        echo $obj;
-    }
-
-    function returnWithError($msg) {
-        $retValue = '{"id":0,"error":"' . $msg . '"}';
-        sendResultInfoAsJson($retValue);
-    }
-
-    function returnWithInfo($id, $firstName, $lastName, $email, $phone) {
-        $retValue = '{"id":' . $id . ',"firstName":"' . $firstName . '","lastName":"' . $lastName . '","email":"' . $email . '","phone":"' . $phone . '","error":""}';
-        sendResultInfoAsJson($retValue);
-    }
-
 ?>
