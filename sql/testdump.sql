@@ -37,12 +37,12 @@ CREATE TABLE `SMALLPROJECT`.`Contacts`
 ) ENGINE = InnoDB;
 
 -- Insert `Users` test entries
-INSERT INTO Users (Login, Password, FirstName, LastName) VALUES
-('jdoe', 'passwordhash1', 'John', 'Doe'),
-('asmith', 'passwordhash2', 'Alice', 'Smith'),
-('bwayne', 'passwordhash3', 'Bruce', 'Wayne'),
-('ckent', 'passwordhash4', 'Clark', 'Kent'),
-('dprince', 'passwordhash5', 'Diana', 'Prince');
+INSERT INTO Users (Login, Password, Email, FirstName, LastName) VALUES
+('jdoe', 'passwordhash1', 'email1@gmail.com', 'John', 'Doe'),
+('asmith', 'passwordhash2', 'email2@gmail.com', 'Alice', 'Smith'),
+('bwayne', 'passwordhash3', 'email3@gmail.com', 'Bruce', 'Wayne'),
+('ckent', 'passwordhash4', 'email4@gmail.com', 'Clark', 'Kent'),
+('dprince', 'passwordhash5', 'email5@gmail.com', 'Diana', 'Prince');
 
 -- Insert `Contacts` test entries
 INSERT INTO Contacts (UserID, FirstName, LastName, Email, Phone) VALUES
