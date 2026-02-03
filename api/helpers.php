@@ -12,6 +12,7 @@
         $retValue = '{"error":"' . $msg . '"}';
         sendResultInfoAsJson($retValue);
     }
+
     function returnContactInfo($id, $firstName, $lastName, $email, $phone) {
         $retValue = '{"id":' . $id . ',"firstName":"' . $firstName . '","lastName":"' . $lastName . '","email":"' . $email . '","phone":"' . $phone . '","error":""}';
         sendResultInfoAsJson($retValue);
@@ -21,8 +22,9 @@
         $retValue = '{"Contacts":' . json_encode($contacts) . ',"error": ""}';
         sendResultInfoAsJson($retValue);
     }
+
 	function returnUserInfo($id, $firstName, $lastName){
 		$retValue = '{"id":' . $id . ',"firstName":"' . $firstName . '","lastName":"' . $lastName . '","error":""}';
-		sendResultInfoAsJson( $retValue );
+		sendResultInfoAsJson($retValue);
 	}
 ?>
