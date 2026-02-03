@@ -12,11 +12,11 @@
 </head>
 
 <body>
-  <a href="index.html" class="btn btn-secondary" style="position: absolute; top: 20px; left: 20px;">Back</a>
-  <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+  <a href="index.html" class="btn btn-secondary position-absolute top-0 start-0 m-3">Back</a>
+  <div class="d-flex justify-content-center align-items-center min-vh-100 px-3">
     <!-- <h1>Group 7 Contact Book Signup</h1> -->
 
-    <form id="signup" class="w-25 p-3">
+    <form id="signup" class="w-100 p-3" style="max-width: 400px;">
       <!-- <label for id="signup" class="form-label">Signup</label> -->
       <div class="mb-3">
         <label for="loginName" class="form-label">First Name</label>
@@ -46,8 +46,8 @@
           Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.
         </div>
       </div>
-      <button type="submit" class="btn btn-primary">Signup</button>
-      <span class="text" style="color:rgb(203, 55, 21);" id="signupResult"></span>
+      <button type="submit" class="btn btn-primary  w-25">Signup</button>
+      <span class="text-danger d-block mt-2 text-center" id="signupResult"></span>
     </form>
   </div>
 </body> 
