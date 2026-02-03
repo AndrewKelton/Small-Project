@@ -9,13 +9,15 @@ Follow this workflow when contributing to the project:
 Before starting any work, pull the latest changes from the `dev` and `main` branch:
 
 ```bash
-git pull origin dev
+git checkout main
 git pull origin main
+git checkout dev
+git pull origin dev
 ```
 
 ### 2. Create a Feature Branch
 
-Create a new branch for your work. Use the naming convention based on what you're working on:
+Create a new branch for your work (ALWAYS branch off of dev). Use the naming convention based on what you're working on:
 
 **Frontend developers:**
 ```bash
