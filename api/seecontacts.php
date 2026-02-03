@@ -35,6 +35,20 @@
         exit();
     }
 
+    $stmt = $conn->prepare("SELECT * FROM Contacts WHERE UserID = ?");
+    $stmt->bind_param("i", $userID);
 
+    if($stmt->execute()) {
+        $result = $stmt->get_result();
+        $contacts = $result->fetch_all(MYSQLI_ASSOC);
 
+        sendResultInfoAsJson(json_encode($contacts));
+    }
+    else {
+        returnWithError("MySQL statment failed to run");
+        exit();
+    }
+
+    $stmt->close();
+    $conn->close();
 ?>
