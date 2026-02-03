@@ -129,7 +129,7 @@ function doSignup() {
         // firstName = jsonObject.firstName;
         // lastName = jsonObject.lastName;
         console.log("Signup successful: " + firstName + " " + lastName);
-        saveCookie();
+        // saveCookie();
         // window.location.href = "contacts.html";
       }
       else if (this.status == 400) {
