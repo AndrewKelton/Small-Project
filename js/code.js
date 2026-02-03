@@ -10,7 +10,8 @@ let firstName = "";
 let lastName = "";
 const ids = [];
 
-// Attach event listeners when the page loads
+/* event listeners when the page loads */
+// login page
 document.addEventListener("DOMContentLoaded", function() {
   const loginForm = document.getElementById("login");
   if (loginForm) {
@@ -20,6 +21,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
 
+  // signup page
   const signupForm = document.getElementById("signup");
   if (signupForm) {
     signupForm.addEventListener("submit", function(e) {
@@ -27,7 +29,17 @@ document.addEventListener("DOMContentLoaded", function() {
       doSignup();
     });
   }
+
+  // addcontact page
+  const adddContactForm = document.getElementById("add-contact");
+  if (signupForm) {
+    signupForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+      addContact();
+    });
+  }
 });
+
 
 // Function to handle user login
 function doLogin() {
@@ -147,6 +159,36 @@ function doSignup() {
     } catch(err) {
       document.getElementById("signupResult").innerHTML = err.message;
     }
+}
+
+// Function to add a contact to user's account
+function addContact() {
+  let newContactFirstName = document.getElementById("firstname");
+  let newContactLastName = document.getElementById("lastname");
+  let newContactEmail = document.getElementById("email");
+  let newContactPhone = document.getElementById("phone");
+
+  document.getElementById("addContactResult").innerHTML = "";
+
+  let tmp = {firstname:newContactFirstName, lastname:newContactLastName, email:newContactEmail, phone:newContactPhone, userID:userId};
+  let jsonPayload = JSON.stringify(tmp);
+
+  let url = urlBase + '/addcontact' + extension;
+
+  let xhr = new XMLHttpRequest();
+  xhr.open("POST", url, true);
+  xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+
+  try {
+    xhr.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("addContactResult").innerHTML = "Contact has been added"
+      }
+    };
+    xhr.send(jsonPayload);
+  } catch(err) {
+    document.getElementById("addContactResult").innerHTML = err.message;
+  }
 }
 
 // Function to handle user logout
