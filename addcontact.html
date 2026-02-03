@@ -17,18 +17,14 @@
 </head>
 
 <body>
-  <div style="position: absolute; top: 20px; left: 20px;">
-    <div class="btn-group" role="group" aria-label="Back">
-      <button type="button" onclick="location.href = 'contacts.html';" class ="btn btn-primary">Back</button>
-    </div>
-  </div>
+  <a href="contacts.html" class="btn btn-secondary position-absolute top-0 start-0 m-3">Back</a>
   
-  <br><br><br>
+  <!-- <br><br><br> -->
 
-  <h1 id="title">Add Contact</h1>
+  <!-- <h1 id="title">Add Contact</h1> -->
 
-  <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
-    <form id="add-contact" class="w-25 p-3">
+  <div class="d-flex justify-content-center align-items-center min-vh-100 px-3">
+    <form id="add-contact" class="w-100 p-3" style="max-width: 400px;">
       <div class="mb-3">
         <label for="firstname" class="form-label">First Name</label>
         <input type="text" class="form-control" id="firstname" required>
@@ -45,8 +41,8 @@
         <label for="phone" class="form-label">Phone</label>
         <input type="tel" class="form-control" id="phone" required>
       </div>
-      <button type="submit" class="btn btn-primary">Add Contact</button>
-      <span id="addContactResult"></span>
+      <button type="submit" class="btn btn-primary w-25">Add Contact</button>
+      <span class="text-danger d-block mt-2 text-center" id="addContactResult"></span>
 
     </form>
   </div>
