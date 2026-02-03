@@ -183,6 +183,10 @@ function addContact() {
     xhr.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
         document.getElementById("addContactResult").innerHTML = "Contact has been added"
+      } else {
+        let jsonObject = JSON.parse(xhr.responseText);
+        document.getElementById("addContactResult").innerHTML = jsonObject.Error || "Invalid input";
+        console.log("Add Contact failed: " + this.status);
       }
     };
     xhr.send(jsonPayload);
