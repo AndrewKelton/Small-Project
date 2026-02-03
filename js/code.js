@@ -163,14 +163,14 @@ function doSignup() {
 
 // Function to add a contact to user's account
 function addContact() {
-  let newContactFirstName = document.getElementById("firstname");
-  let newContactLastName = document.getElementById("lastname");
-  let newContactEmail = document.getElementById("email");
-  let newContactPhone = document.getElementById("phone");
+  let newContactFirstName = document.getElementById("firstname").value;
+  let newContactLastName = document.getElementById("lastname").value;
+  let newContactEmail = document.getElementById("email").value;
+  let newContactPhone = document.getElementById("phone").value;
 
   document.getElementById("addContactResult").innerHTML = "";
 
-  let tmp = {firstname:newContactFirstName, lastname:newContactLastName, email:newContactEmail, phone:newContactPhone, userID:userId};
+  let tmp = {firstname:newContactFirstName, lastname:newContactLastName, email:newContactEmail, phone:newContactPhone, userId:userId};
   let jsonPayload = JSON.stringify(tmp);
 
   let url = urlBase + '/addcontact' + extension;
