@@ -14,10 +14,26 @@
   }, false);
   </script>
 
+  <style>
+    #loginDiv
+    {
+        font-size: 30px;
+        width: 70%;
+        margin-left: 15%;
+        padding: 25px;
+        background-color: #b2b2b2;
+    }
+  </style>
+
 </head>
 
 <body>
   <h1>Welcome!</h1>
+
+  <div id="loggedInDiv">
+    <span id="userName"></span><br />
+    <button type="button" id="logoutButton" class="buttons" onclick="doLogout();"> Log Out </button>
+  </div>
 </body>
 
 </html>
