@@ -170,7 +170,7 @@ function addContact() {
 
   document.getElementById("addContactResult").innerHTML = "";
 
-  let tmp = {firstname:newContactFirstName, lastname:newContactLastName, email:newContactEmail, phone:newContactPhone, userID:userId};
+  let tmp = {firstName:newContactFirstName, lastName:newContactLastName, email:newContactEmail, phone:newContactPhone, userID:userId};
   let jsonPayload = JSON.stringify(tmp);
 
   let url = urlBase + 'api/addcontact' + extension;
