@@ -19,10 +19,14 @@
   <h1 id="title">Add Contact</h1>
 
   <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
-    <form id="create-contact" class="w-25 p-3">
+    <form id="add-contact" class="w-25 p-3">
       <div class="mb-3">
-        <label for="name" class="form-label">Name</label>
-        <input type="text" class="form-control" id="name" required>
+        <label for="firstname" class="form-label">First Name</label>
+        <input type="text" class="form-control" id="firstname" required>
+      </div>
+      <div class="mb-3">
+        <label for="lastname" class="form-label">Last Name</label>
+        <input type="text" class="form-control" id="lastname" required>
       </div>
       <div class="mb-3">
         <label for="email" class="form-label">Email</label>
@@ -33,6 +37,8 @@
         <input type="tel" class="form-control" id="phone" required>
       </div>
       <button type="submit" class="btn btn-primary">Add Contact</button>
+      <span id="addContactResult"></span>
+
     </form>
   </div>
 </body>
