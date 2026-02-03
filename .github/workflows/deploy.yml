@@ -45,20 +45,9 @@ jobs:
             git reset --hard origin/staging
           else
             # Not a git repo yet - need to initialize
-            # Option 1: Clear directory and clone (CAUTION: deletes existing files)
             rm -rf /var/www/html/*
             rm -rf /var/www/html/.*  2>/dev/null || true
-            git clone -b staging https://github.com/AdamAddem/Small-Project.git .
-            
-            # Option 2: Deploy to subdirectory instead (uncomment if you prefer)
-            # cd /var/www
-            # rm -rf myapp
-            # git clone -b staging https://github.com/AdamAddem/Small-Project.git myapp
-          fi
+            git clone -b staging https://github.com/AndrewKelton/Small-Project.git .
           
-          # Add any additional deployment commands here
-          # For example:
-          # npm install
-          # composer install
-          # systemctl restart nginx
+          fi
         EOF
