@@ -8,6 +8,7 @@ const extension = '.php';
 let userId = 0;
 let firstName = "";
 let lastName = "";
+const ids = [];
 
 // Attach event listeners when the page loads
 document.addEventListener("DOMContentLoaded", function() {
@@ -164,4 +165,30 @@ function saveCookie() {
 	let date = new Date();
 	date.setTime(date.getTime()+(minutes*60*1000));	
 	document.cookie = "firstName=" + firstName + ",lastName=" + lastName + ",userId=" + userId + ";expires=" + date.toGMTString();
+}
+
+// Function to read user cookies
+function readCookie() {
+  userId = -1;
+  let data = document.cookie;
+  let splits = data.split(",");
+
+  for (var i = 0; i < splits.length; i++) {
+    let thisOne = splits[i].trim();
+    let tokens = thisOne.split("=");
+
+    if (tokens[0] == "firstName") {
+      firstName = tokens[1];
+    } else if (tokens[0] == "lastName") {
+      lastName = tokens[1];
+    } else if (tokens[0] == "userId") {
+      userId = parseInt(tokens[1].trim());
+    }
+  }
+
+  if (userId < 0) {
+    window.location.href = "index.html";
+  } else {
+    document.getElementById("userName").innerHTML = "Welcome, " + firstName + " " + lastName + "!";
+  }
 }
