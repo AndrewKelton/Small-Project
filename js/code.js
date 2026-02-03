@@ -31,9 +31,9 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // addcontact page
-  const adddContactForm = document.getElementById("add-contact");
-  if (signupForm) {
-    signupForm.addEventListener("submit", function(e) {
+  const addContactForm = document.getElementById("add-contact");
+  if (addContactForm) {
+    addContactForm.addEventListener("submit", function(e) {
       e.preventDefault();
       addContact();
     });
