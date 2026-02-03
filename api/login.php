@@ -1,4 +1,5 @@
 <?php
+
     // Load .env file
     $envFile = __DIR__ . '/../.env';
     if (file_exists($envFile)) {
@@ -51,7 +52,7 @@
     $stmt->execute();
     $result = $stmt->get_result();
 
-    if ($row = $result->fetch_assoc()){
+    if ($row = $result->fetch_assoc()) {
         returnUserInfo( $row['ID'], $row['FirstName'], $row['LastName']);
     }
     else {
