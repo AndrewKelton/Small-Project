@@ -455,6 +455,45 @@ function displaySelectedContactTable()
         
 } // end function displaySelectedContactTable
 
+// Function to delete selected contact
+function deleteContact() {
+
+  // get contactId
+  const urlParams = new URLSearchParams(window.location.search);
+  let contactID = urlParams.get('id');
+
+  console.log("Delete: " + contactID);
+
+  document.getElementById("deleteContactResult").innerHTML = "";
+
+  let tmp = {contactID: contactID};
+  let jsonPayload = JSON.stringify(tmp);
+
+  let url = urlBase + 'api/deletecontact' + extension;
+
+  let xhr = new XMLHttpRequest();
+  xhr.open("POST", url, true);
+  xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+
+  try {
+    xhr.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("deleteContactResult").innerHTML = "Contact has been deleted"
+      } else if (this.status == 400) {
+        let jsonObject = JSON.parse(xhr.responseText);
+        document.getElementById("deleteContactResult").innerHTML = jsonObject.Error || "Invalid input";
+        console.log("Delete Contact failed: " + this.status);
+      } else {
+        let jsonObject = JSON.parse(xhr.responseText);
+        document.getElementById("deleteContactResult").innerHTML = jsonObject.Error || "Invalid input";
+        console.log("Delete Contact failed: " + this.status);
+      }
+    };
+    xhr.send(jsonPayload);
+  } catch(err) {
+    document.getElementById("deleteContactResult").innerHTML = err.message;
+  }
+}
 
 
 
