@@ -434,7 +434,11 @@ function displaySelectedContactTable()
               let email = jsonObjArr[i][keyArr[4]];
               let phone = jsonObjArr[i][keyArr[5]];
 
-              strHTML += '<td>' + firstName + '</td>' + '<td>' + lastName + '</td>' + '<td>' + email + '</td>' + '<td>' + phone + '</td>';
+              // make editable 
+              strHTML += '<td contenteditable="true" data-field="firstName">' + firstName + '</td>';
+              strHTML += '<td contenteditable="true" data-field="lastName">' + lastName + '</td>';
+              strHTML += '<td contenteditable="true" data-field="email">' + email + '</td>';
+              strHTML += '<td contenteditable="true" data-field="phone">' + phone + '</td>'
               
               break;
             }
