@@ -40,6 +40,19 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 });
 
+// event listener for non-form buttons
+document.addEventListener("click", (event) => {
+  if (event.target.name === 'modify_button') {
+
+    contactRecordID = event.target.id;
+    console.log("button: " + contactRecordID);  
+
+    // go to 'selected contact' page
+    // pass ID to the new page
+    // new page will look up the ID (not the UserID) in the contacts table
+  }
+});
+
 
 // Function to handle user login
 function doLogin() {
@@ -250,7 +263,6 @@ function displayContactsTable()
   // json being sent out with the http request
   let strObj = { UserID: userId };
   let jsonPayload = JSON.stringify(strObj);
-  console.log("userId = " + userId);
   
   // post http request
   let url = urlBase + 'api/seecontacts' + extension;
@@ -268,7 +280,6 @@ function displayContactsTable()
         let jsonObjArr = JSON.parse(xhr.responseText);
         let numContacts = jsonObjArr.length;
         let strHTML = "";
-        console.log("numContacts = " + numContacts);
 
         // contact list header
         strHTML = "<h3>CONTACT LIST:</h3>";
@@ -282,10 +293,10 @@ function displayContactsTable()
 
           // number of columns in the contacts table (does not include 'ID' and 'UserID' sent from api)
           let recordCol = Object.keys(jsonObjArr[0]).length;
-          let col = recordCol - 2;
+          let col = recordCol - 1;
 
           // header labels for the contacts table
-          let headerLabelsArr = ["First Name", "Last Name", "Email", "Phone Number"];
+          let headerLabelsArr = ["First Name", "Last Name", "Email", "Phone Number", "Update or Delete"];
 
           // object (represents row of contacts table) key for database record
           let keyArr = Object.keys(jsonObjArr[0]);
@@ -309,6 +320,9 @@ function displayContactsTable()
               strHTML += '<td>' + jsonObjArr[i][keyArr[j]] + '</td>';
             }
 
+            // add button into last column of each row
+            strHTML += '<td>' + '<button id="' + jsonObjArr[i][keyArr[0]] + '" name="modify_button" type="button" class="btn btn-primary">Primary</button>' + '</td>';
+
             // end table row
             strHTML += '</tr>'
           }
@@ -329,7 +343,7 @@ function displayContactsTable()
   } // end try block
   catch (err) {
 
-    document.getElementById("loginResult").innerHTML = err.message;
+    document.getElementById("user_contacts_table").innerHTML = err.message;
   } 
 
 } // end function displayContactsTable
