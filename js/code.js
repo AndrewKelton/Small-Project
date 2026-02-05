@@ -535,6 +535,20 @@ function updateContact() {
     return;
   }
 
+  // email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    document.getElementById("contactActionResult").innerHTML = "Enter a valid email address.";
+    return;
+  }
+
+  // phone validation
+  const phoneRegex = /^[\d\s\-\(\)\+]+$/;
+  if (!phoneRegex.test(phone)) {
+    document.getElementById("contactActionResult").innerHTML = "Enter a valid phone number.";
+    return;
+  }
+
   let tmp = {
     contactID: contactID,
     userID: userId,
