@@ -250,6 +250,7 @@ function displayContactsTable()
   // json being sent out with the http request
   let strObj = { UserID: userId };
   let jsonPayload = JSON.stringify(strObj);
+  console.log("userId = " + userId);
   
   // post http request
   let url = urlBase + 'api/seecontacts' + extension;
@@ -267,6 +268,7 @@ function displayContactsTable()
         let jsonObjArr = JSON.parse(xhr.responseText);
         let numContacts = jsonObjArr.length;
         let strHTML = "";
+        console.log("numContacts = " + numContacts);
 
         // contact list header
         strHTML = "<h3>CONTACT LIST:</h3>";
