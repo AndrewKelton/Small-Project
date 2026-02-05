@@ -45,11 +45,14 @@ document.addEventListener("click", (event) => {
   if (event.target.name === 'modify_button') {
 
     contactRecordID = event.target.id;
-    console.log("button: " + contactRecordID);  
+    console.log("button: " + contactRecordID); 
 
-    // go to 'selected contact' page
-    // pass ID to the new page
-    // new page will look up the ID (not the UserID) in the contacts table
+    let queryString = new URLSearchParams({
+      recordID: contactRecordID
+    }).toString();
+    
+    // go to selected_contacts.html
+    window.location.href = `selected_contact.html?${queryString}`;
   }
 });
 
@@ -334,7 +337,6 @@ function displayContactsTable()
         // set markup for contacts table
         document.getElementById("user_contacts_table").innerHTML = strHTML;
 
-        saveCookie();
       } // end onreadystatechange function
     }; // end try block
 
@@ -347,5 +349,112 @@ function displayContactsTable()
   } 
 
 } // end function displayContactsTable
+
+
+// Function to display the selected contact
+function displaySelectedContactTable()
+{
+  console.log("userId = " + userId);
+
+  // clear contacts table upon opening page
+  document.getElementById("selected_contact_table").innerHTML = "";
+
+  let searchParams = new URLSearchParams(window.location.search);
+  let contactRecordID = searchParams.get('recordID');
+  console.log("contactRecordID = " + contactRecordID);
+
+  // json being sent out with the http request
+  let strObj = { UserID: userId };
+  let jsonPayload = JSON.stringify(strObj);
+  
+  // post http request
+  let url = urlBase + 'api/seecontacts' + extension;
+  let xhr = new XMLHttpRequest();
+  xhr.open("POST", url, true);
+  xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+  
+  try {
+
+    xhr.onreadystatechange = function() {
+
+      if (this.readyState == 4 && this.status == 200) {
+        
+        // parse json response from api
+        let jsonObjArr = JSON.parse(xhr.responseText);
+        let numContacts = jsonObjArr.length;
+        let strHTML = "";
+
+        // contact list header
+        strHTML = "<h3>SELECTED CONTACT:</h3>";
+
+        if (numContacts == 0) { // enter if the contacts table is empty
+
+          document.getElementById("selected_contact_table").innerHTML = "<p>There appears to be an error.</p>";
+          return;
+        }
+        else { // enter if the contacts table has >=1 contacts
+
+          // number of columns in the contacts table (does not include 'ID' and 'UserID' sent from api)
+          let recordCol = Object.keys(jsonObjArr[0]).length;
+          let col = recordCol - 2;
+
+          // header labels for the contacts table
+          let headerLabelsArr = ["First Name", "Last Name", "Email", "Phone Number"];
+
+          // object (represents row of contacts table) key for database record
+          let keyArr = Object.keys(jsonObjArr[0]);
+
+          // start table
+          strHTML += '<table id="selected_contact_table">';
+
+          // table header
+          for (let i = 0; i < col; i++) { // loop thru table columns
+
+            strHTML += '<th>' + headerLabelsArr[i] + '</th>';
+          } 
+
+          // start table row
+          strHTML += '<tr id="selected_contact_row">';         
+
+          // find the recordID
+          for (let i = 0; i < numContacts; i++) {
+
+            if (jsonObjArr[i][keyArr[0]] == contactRecordID) {
+
+              let firstName = jsonObjArr[i][keyArr[2]];
+              let lastName = jsonObjArr[i][keyArr[3]];
+              let email = jsonObjArr[i][keyArr[4]];
+              let phone = jsonObjArr[i][keyArr[5]];
+
+              strHTML += '<td>' + firstName + '</td>' + '<td>' + lastName + '</td>' + '<td>' + email + '</td>' + '<td>' + phone + '</td>';
+              
+              break;
+            }
+          }
+
+          // end table row
+          strHTML += '</tr>'
+
+          // end table
+          strHTML += '</table>';
+        } // end else
+
+        // set markup for contacts table
+        document.getElementById("selected_contact_table").innerHTML = strHTML;
+
+      } // end onreadystatechange function
+    }; // end try block
+
+    // send http request to api
+    xhr.send(jsonPayload);
+  } // end try block
+  catch (err) {
+
+    document.getElementById("selected_contact_table").innerHTML = err.message;
+  } 
+        
+} // end function displaySelectedContactTable
+
+
 
 
