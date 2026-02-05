@@ -38,6 +38,14 @@ document.addEventListener("DOMContentLoaded", function() {
       addContact();
     });
   }
+
+  // delete button on selected contact page
+  const deleteButton = document.getElementById("deleteContactButton");
+  if (deleteButton) {
+    deleteButton.addEventListener("click", function() {
+      deleteContact();
+    });
+  }
 });
 
 // event listener for non-form buttons
