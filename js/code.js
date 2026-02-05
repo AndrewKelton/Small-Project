@@ -324,7 +324,7 @@ function displayContactsTable()
             }
 
             // add button into last column of each row
-            strHTML += '<td>' + '<button id="' + jsonObjArr[i][keyArr[0]] + '" name="modify_button" type="button" class="btn btn-primary">Primary</button>' + '</td>';
+            strHTML += '<td>' + '<button id="' + jsonObjArr[i][keyArr[0]] + '" name="modify_button" type="button" class="btn btn-primary" onclick="window.location.href=\'selected_contact.html?id=' + jsonObjArr[i][keyArr[0]] + '\'">Primary</button>' + '</td>';
 
             // end table row
             strHTML += '</tr>'
