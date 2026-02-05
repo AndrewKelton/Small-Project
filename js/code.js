@@ -38,6 +38,22 @@ document.addEventListener("DOMContentLoaded", function() {
       addContact();
     });
   }
+
+  // delete button on selected contact page
+  const deleteButton = document.getElementById("deleteContactButton");
+  if (deleteButton) {
+    deleteButton.addEventListener("click", function() {
+      deleteContact();
+    });
+  }
+
+  // save button on selected contact page
+  const saveButton = document.getElementById("saveContactButton");
+  if (saveButton) {
+    saveButton.addEventListener("click", function() {
+      updateContact();
+    });
+  }
 });
 
 // event listener for non-form buttons
@@ -324,7 +340,7 @@ function displayContactsTable()
             }
 
             // add button into last column of each row
-            strHTML += '<td>' + '<button id="' + jsonObjArr[i][keyArr[0]] + '" name="modify_button" type="button" class="btn btn-primary">Primary</button>' + '</td>';
+            strHTML += '<td>' + '<button id="' + jsonObjArr[i][keyArr[0]] + '" name="modify_button" type="button" class="btn btn-primary" onclick="window.location.href=\'selected_contact.html?id=' + jsonObjArr[i][keyArr[0]] + '\'">Primary</button>' + '</td>';
 
             // end table row
             strHTML += '</tr>'
@@ -426,7 +442,11 @@ function displaySelectedContactTable()
               let email = jsonObjArr[i][keyArr[4]];
               let phone = jsonObjArr[i][keyArr[5]];
 
-              strHTML += '<td>' + firstName + '</td>' + '<td>' + lastName + '</td>' + '<td>' + email + '</td>' + '<td>' + phone + '</td>';
+              // make editable 
+              strHTML += '<td contenteditable="true" data-field="firstName">' + firstName + '</td>';
+              strHTML += '<td contenteditable="true" data-field="lastName">' + lastName + '</td>';
+              strHTML += '<td contenteditable="true" data-field="email">' + email + '</td>';
+              strHTML += '<td contenteditable="true" data-field="phone">' + phone + '</td>'
               
               break;
             }
@@ -455,6 +475,113 @@ function displaySelectedContactTable()
         
 } // end function displaySelectedContactTable
 
+// Function to delete selected contact
+function deleteContact() {
 
+  // get contactId
+  const urlParams = new URLSearchParams(window.location.search);
+  let contactID = urlParams.get('id');
 
+  console.log("Delete: " + contactID);
+
+  document.getElementById("deleteContactResult").innerHTML = "";
+
+  let tmp = {contactID: contactID};
+  let jsonPayload = JSON.stringify(tmp);
+
+  let url = urlBase + 'api/deletecontact' + extension;
+
+  let xhr = new XMLHttpRequest();
+  xhr.open("POST", url, true);
+  xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+
+  try {
+    xhr.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("deleteContactResult").innerHTML = "Contact has been deleted"
+      } else if (this.status == 400) {
+        let jsonObject = JSON.parse(xhr.responseText);
+        document.getElementById("deleteContactResult").innerHTML = jsonObject.Error || "Invalid input";
+        console.log("Delete Contact failed: " + this.status);
+      } else {
+        let jsonObject = JSON.parse(xhr.responseText);
+        document.getElementById("deleteContactResult").innerHTML = jsonObject.Error || "Invalid input";
+        console.log("Delete Contact failed: " + this.status);
+      }
+    };
+    xhr.send(jsonPayload);
+  } catch(err) {
+    document.getElementById("deleteContactResult").innerHTML = err.message;
+  }
+}
+
+// Function to update selected contact
+function updateContact() {
+
+  // get contactId
+  const urlParams = new URLSearchParams(window.location.search);
+  let contactID = urlParams.get('recordID');
+
+  const cells = document.querySelectorAll('#selected_contact_row td[contenteditable="true"]');
+
+  let firstName = cells[0].textContent.trim();
+  let lastName = cells[1].textContent.trim();
+  let email = cells[2].textContent.trim();
+  let phone = cells[3].textContent.trim();
+
+  // check valid input
+  if (!firstName || !lastName || !email || !phone) {
+    document.getElementById("contactActionResult").innerHTML = "All fields are required.";
+    return;
+  }
+
+  // email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    document.getElementById("contactActionResult").innerHTML = "Enter a valid email address.";
+    return;
+  }
+
+  // phone validation
+  const phoneRegex = /^[\d\s\-\(\)\+]+$/;
+  if (!phoneRegex.test(phone)) {
+    document.getElementById("contactActionResult").innerHTML = "Enter a valid phone number.";
+    return;
+  }
+
+  let tmp = {
+    contactID: contactID,
+    userID: userId,
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    phone: phone
+  };
+  let jsonPayload = JSON.stringify(tmp);
+
+  let url = urlBase + 'api/updatecontact' + extension;
+
+  let xhr = new XMLHttpRequest();
+  xhr.open("POST", url, true);
+  xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+
+  try {
+    xhr.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        let jsonObject = JSON.parse(xhr.responseText);
+
+        if (jsonObject.error) {
+          document.getElementById("contactActionResult").innerHTML = jsonObject.error;
+        } else {
+          document.getElementById("contactActionResult").innerHTML = "Contact updated successfully!";
+          document.getElementById("contactActionResult").className = "text-success d-block mt-2 text-center";
+        }
+      }
+    };
+    xhr.send(jsonPayload);
+  } catch (err) {
+    document.getElementById("contactActionResult").innerHTML = jsonObject.error;
+  }
+
+}
 
