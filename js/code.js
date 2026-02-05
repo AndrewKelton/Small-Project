@@ -46,6 +46,14 @@ document.addEventListener("DOMContentLoaded", function() {
       deleteContact();
     });
   }
+
+  // save button on selected contact page
+  const saveButton = document.getElementById("saveContactButton");
+  if (saveButton) {
+    saveButton.addEventListener("click", function() {
+      updateContact();
+    });
+  }
 });
 
 // event listener for non-form buttons
@@ -507,5 +515,59 @@ function deleteContact() {
   }
 }
 
+// Function to update selected contact
+function updateContact() {
 
+  // get contactId
+  const urlParams = new URLSearchParams(window.location.search);
+  let contactID = urlParams.get('recordID');
+
+  const cells = document.querySelectorAll('#selected_contact_row td[contenteditable="true"]');
+
+  let firstName = cells[0].textContent.trim();
+  let lastName = cells[1].textContent.trim();
+  let email = cells[2].textContent.trim();
+  let phone = cells[3].textContent.trim();
+
+  // check valid input
+  if (!firstName || !lastName || !email || !phone) {
+    document.getElementById("contactActionResult").innerHTML = "All fields are required.";
+    return;
+  }
+
+  let tmp = {
+    contactID: contactID,
+    userID: userId,
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    phone: phone
+  };
+  let jsonPayload = JSON.stringify(tmp);
+
+  let url = urlBase + 'api/updatecontact' + extension;
+
+  let xhr = new XMLHttpRequest();
+  xhr.open("POST", url, true);
+  xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+
+  try {
+    xhr.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        let jsonObject = JSON.parse(xhr.responseText);
+
+        if (jsonObject.error) {
+          document.getElementById("contactActionResult").innerHTML = jsonObject.error;
+        } else {
+          document.getElementById("contactActionResult").innerHTML = "Contact updated successfully!";
+          document.getElementById("contactActionResult").className = "text-success d-block mt-2 text-center";
+        }
+      }
+    };
+    xhr.send(jsonPayload);
+  } catch (err) {
+    document.getElementById("contactActionResult").innerHTML = jsonObject.error;
+  }
+
+}
 
