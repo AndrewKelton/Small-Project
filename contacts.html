@@ -7,13 +7,6 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   <title>Contacts Page</title> 
 
-  <script type="text/javascript">
-    document.addEventListener('DOMContentLoaded', function()
-  {
-    readCookie();
-  }, false);
-  </script>
-
   <style>
     #loginDiv
     {
@@ -23,6 +16,34 @@
         padding: 25px;
         background-color: #b2b2b2;
     }
+
+    #loginDiv
+    {
+        font-size: 30px;
+        width: 70%;
+        margin-left: 15%;
+        padding: 25px;
+        background-color: #b2b2b2;
+    }
+
+    table
+    {
+      border-collapse: collapse;
+
+    }
+
+    th, td {
+      border: 1px solid black; 
+      padding: 8px; 
+      text-align: center; 
+    }
+
+    th 
+    {
+      background-color: lightgrey; 
+      color: royalblue; 
+    }
+
   </style>
 
 </head>
@@ -33,6 +54,14 @@
   <div id="loggedInDiv">
     <span id="userName"></span><br />
     <button type="button" id="logoutButton" class="buttons" onclick="doLogout();"> Log Out </button>
+  </div>
+
+  <!-- entire user's contacts table -->
+  <div id="user_contacts_table" style="margin-top: 25px">
+    <script>
+      readCookie();
+      displayContactsTable();
+    </script>
   </div>
 </body>
 

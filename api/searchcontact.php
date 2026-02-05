@@ -1,4 +1,5 @@
-<?php // Load .env file
+<?php
+    // Load .env file
     $envFile = __DIR__ . '/../.env';
     if (file_exists($envFile)) {
         $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
@@ -10,6 +11,30 @@
         }
     }
 
+    require 'helpers.php';
 
+    $inData = getRequestInfo();
+
+    // Get DB credentials
+    $host = getenv('DB_HOST');
+    $db = getenv('DB_NAME');
+    $user = getenv('DB_USER');
+    $pwd = getenv('DB_PASS');
+
+    // frontend input parameters
+    $searchTerm = $inData["searchTerm"];
+
+    // database connection
+    $conn = new mysqli($host, $user, $pwd, $db);
+ 
+    // database connection error
+    if ($conn->connect_errno) {
+        http_response_code(400);
+        header('Content-type: text/plain');
+        echo $conn->connect_error;
+        exit();
+    }
+
+    // TODO LOGIC TO BE ADDED
 
 ?>

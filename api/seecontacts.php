@@ -13,7 +13,7 @@
 
     require 'helpers.php';
 
-    $inData = getRequestInfo(); 
+    $inData = getRequestInfo();
 
     // Get DB credentials
     $host = getenv('DB_HOST');
@@ -22,19 +22,32 @@
     $pwd = getenv('DB_PASS');
 
     // frontend input parameters
-    $contactID = $inData["contactID"];
+    $userID = $inData["UserID"];
 
     // database connection
     $conn = new mysqli($host, $user, $pwd, $db);
- 
+
     // database connection error
-    if ($conn->connect_errno) {
+    if ($conn->connect_error) {
         http_response_code(400);
         header('Content-type: text/plain');
         echo $conn->connect_error;
         exit();
     }
 
-    // TODO LOGIC TO BE ADDED
-    
+    $stmt = $conn->prepare("SELECT * FROM Contacts WHERE UserID = ?");
+    $stmt->bind_param("i", $userID);
+
+    if($stmt->execute()) {
+        $result = $stmt->get_result();
+        $contacts = $result->fetch_all(MYSQLI_ASSOC);
+
+        sendResultInfoAsJson(json_encode($contacts));
+    }
+    else {
+        http_response_code(400);
+    }
+
+    $stmt->close();
+    $conn->close();
 ?>
