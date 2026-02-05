@@ -240,3 +240,98 @@ function readCookie() {
     window.location.href = "index.html";
   }
 }
+
+// Function to display the entire contacts table
+function displayContactsTable() 
+{
+  // clear contacts table upon opening page
+  document.getElementById("user_contacts_table").innerHTML = "";
+
+  // json being sent out with the http request
+  let strObj = { UserID: userId };
+  let jsonPayload = JSON.stringify(strObj);
+  console.log("userId = " + userId);
+  
+  // post http request
+  let url = urlBase + 'api/seecontacts' + extension;
+  let xhr = new XMLHttpRequest();
+  xhr.open("POST", url, true);
+  xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+  
+  try {
+
+    xhr.onreadystatechange = function() {
+
+      if (this.readyState == 4 && this.status == 200) {
+        
+        // parse json response from api
+        let jsonObjArr = JSON.parse(xhr.responseText);
+        let numContacts = jsonObjArr.length;
+        let strHTML = "";
+        console.log("numContacts = " + numContacts);
+
+        // contact list header
+        strHTML = "<h3>CONTACT LIST:</h3>";
+
+        if (numContacts == 0) { // enter if the contacts table is empty
+
+          document.getElementById("user_contacts_table").innerHTML = "<p>You currently have no contacts listed!</p>";
+          return;
+        }
+        else { // enter if the contacts table has >=1 contacts
+
+          // number of columns in the contacts table (does not include 'ID' and 'UserID' sent from api)
+          let recordCol = Object.keys(jsonObjArr[0]).length;
+          let col = recordCol - 2;
+
+          // header labels for the contacts table
+          let headerLabelsArr = ["First Name", "Last Name", "Email", "Phone Number"];
+
+          // object (represents row of contacts table) key for database record
+          let keyArr = Object.keys(jsonObjArr[0]);
+
+          // start table
+          strHTML += '<table id="user_contacts_table">';
+
+          // table header
+          for (let i = 0; i < col; i++) { // loop thru table columns
+
+            strHTML += '<th>' + headerLabelsArr[i] + '</th>';
+          }          
+
+          for (let i = 0; i < numContacts; i++) {
+
+            // start table row
+            strHTML += '<tr>';
+
+            for (let j = 2; j < recordCol; j++) { // loop thru table columns
+
+              strHTML += '<td>' + jsonObjArr[i][keyArr[j]] + '</td>';
+            }
+
+            // end table row
+            strHTML += '</tr>'
+          }
+
+          // end table
+          strHTML += '</table>';
+        } // end else
+
+        // set markup for contacts table
+        document.getElementById("user_contacts_table").innerHTML = strHTML;
+
+        saveCookie();
+      } // end onreadystatechange function
+    }; // end try block
+
+    // send http request to api
+    xhr.send(jsonPayload);
+  } // end try block
+  catch (err) {
+
+    document.getElementById("loginResult").innerHTML = err.message;
+  } 
+
+} // end function displayContactsTable
+
+
