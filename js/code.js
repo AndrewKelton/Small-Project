@@ -38,6 +38,15 @@ document.addEventListener("DOMContentLoaded", function() {
       addContact();
     });
   }
+
+  // search request
+  const searchForm = document.getElementById("search");
+  if (searchForm) {
+    searchForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+      searchContacts();
+    });
+  }
 });
 
 // event listener for non-form buttons
@@ -454,6 +463,18 @@ function displaySelectedContactTable()
   } 
         
 } // end function displaySelectedContactTable
+
+// Function to search contacts and display search results
+function searchContacts()
+{
+  // add code to search first/last names and display results in table
+  console.log("searchContacts function");
+  let firstName = document.getElementById("firstName").value;
+  let lastName = document.getElementById("lastName").value;
+  console.log(firstName);
+  console.log(lastName);
+  
+} // end function searchContacts
 
 
 
