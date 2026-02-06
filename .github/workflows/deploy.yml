@@ -9,6 +9,7 @@ on:
   push:
     branches:
       - staging
+      - dev # deploy from dev
       # - main  # Uncomment to deploy from main branch as well
 
 jobs:
@@ -31,7 +32,7 @@ jobs:
         ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
         
         # Deploy to server
-        ssh -o StrictHostKeyChecking=no root@$SERVER_IP << 'EOF'
+        ssh -o StrictHostKeyChecking=no root@$SERVER_IP << EOF
           # Navigate to web root or create a project directory
           cd /var/www/html
 
@@ -41,13 +42,13 @@ jobs:
           # Check if this is already a git repo
           if [ -d ".git" ]; then
             # Already a repo, just pull latest changes
-            git fetch origin staging
-            git reset --hard origin/staging
+            git fetch origin $BRANCH_NAME
+            git reset --hard origin/$BRANCH_NAME
           else
             # Not a git repo yet - need to initialize
             rm -rf /var/www/html/*
             rm -rf /var/www/html/.*  2>/dev/null || true
-            git clone -b staging https://github.com/AndrewKelton/Small-Project.git .
+            git clone -b $BRANCH_NAME https://github.com/AndrewKelton/Small-Project.git .
           
           fi
         EOF
