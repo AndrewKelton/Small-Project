@@ -22,11 +22,12 @@
     $pwd = getenv('DB_PASS');
 
     // frontend input parameters
-    $searchTerm = $inData["searchTerm"];
+    $firstName = $inData["firstName"] ?? "";
+    $lastName = $inData["lastName"] ?? "";
 
     // database connection
     $conn = new mysqli($host, $user, $pwd, $db);
- 
+
     // database connection error
     if ($conn->connect_errno) {
         http_response_code(400);
@@ -35,6 +36,38 @@
         exit();
     }
 
-    // TODO LOGIC TO BE ADDED
+    // Build search query with partial, case-insensitive matching
+    // Returns records where EITHER firstName OR lastName partially matches
+    $stmt = $conn->prepare("SELECT * FROM Contacts WHERE LOWER(firstName) LIKE ? OR LOWER(lastName) LIKE ?");
+
+    if (!$stmt) {
+        http_response_code(500);
+        header('Content-type: application/json');
+        echo json_encode(["error" => "Failed to prepare statement: " . $conn->error]);
+        $conn->close();
+        exit();
+    }
+
+    // Add wildcards for partial matching
+    $firstNameParam = "%" . strtolower($firstName) . "%";
+    $lastNameParam = "%" . strtolower($lastName) . "%";
+
+    $stmt->bind_param("ss", $firstNameParam, $lastNameParam);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    // Collect all matching records
+    $contacts = [];
+    while ($row = $result->fetch_assoc()) {
+        $contacts[] = $row;
+    }
+
+    $stmt->close();
+    $conn->close();
+
+    // Return results as JSON
+    header('Content-type: application/json');
+    echo json_encode($contacts);
 
 ?>
