@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function() {
   if (searchForm) {
     searchForm.addEventListener("submit", function(e) {
       e.preventDefault();
-      searchContacts();
+      displaySearchContactsTable();
     });
   }
 });
