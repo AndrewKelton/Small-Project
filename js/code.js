@@ -489,11 +489,11 @@ function deleteContact() {
 
   // get contactId
   const urlParams = new URLSearchParams(window.location.search);
-  let contactID = urlParams.get('id');
+  let contactID = urlParams.get('recordID');
 
   console.log("Delete: " + contactID);
 
-  document.getElementById("deleteContactResult").innerHTML = "";
+  document.getElementById("contactActionResult").innerHTML = "";
 
   let tmp = {contactID: contactID};
   let jsonPayload = JSON.stringify(tmp);
@@ -507,20 +507,20 @@ function deleteContact() {
   try {
     xhr.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
-        document.getElementById("deleteContactResult").innerHTML = "Contact has been deleted"
+        document.getElementById("contactActionResult").innerHTML = "Contact has been deleted"
       } else if (this.status == 400) {
         let jsonObject = JSON.parse(xhr.responseText);
-        document.getElementById("deleteContactResult").innerHTML = jsonObject.Error || "Invalid input";
+        document.getElementById("contactActionResult").innerHTML = jsonObject.Error || "Invalid input";
         console.log("Delete Contact failed: " + this.status);
       } else {
         let jsonObject = JSON.parse(xhr.responseText);
-        document.getElementById("deleteContactResult").innerHTML = jsonObject.Error || "Invalid input";
+        document.getElementById("contactActionResult").innerHTML = jsonObject.Error || "Invalid input";
         console.log("Delete Contact failed: " + this.status);
       }
     };
     xhr.send(jsonPayload);
   } catch(err) {
-    document.getElementById("deleteContactResult").innerHTML = err.message;
+    document.getElementById("contactActionResult").innerHTML = err.message;
   }
 }
 
