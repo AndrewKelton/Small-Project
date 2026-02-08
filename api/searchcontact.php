@@ -1,6 +1,6 @@
 <?php
     // Load .env file
-    $envFile = __DIR__ . '/../.env';
+    $envFile = DIR . '/../.env';
     if (file_exists($envFile)) {
         $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         foreach ($lines as $line) {
@@ -13,7 +13,7 @@
 
     require 'helpers.php';
 
-    $inData = getRequestInfo();
+    $inData = getRequestInfo(); 
 
     // Get DB credentials
     $host = getenv('DB_HOST');
@@ -35,6 +35,30 @@
         echo $conn->connect_error;
         exit();
     }
+    // Validation
+    if (empty($contactID)) {
+        returnWithError("Contact ID is required");
+        $conn->close();
+        exit();
+    }
+    // Check if contact exists
+    $stmt = $conn->prepare("SELECT * FROM Contacts WHERE ID = ?");
+    $stmt->bind_param("i", $contactID);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 0) {
+        returnWithError("Contact not found");
+        $stmt->close();
+        $conn->close();
+        exit();
+    }
+
+    $stmt->close();
+
+    // Delete the contact
+    $stmt = $conn->prepare("DELETE FROM Contacts WHERE ID = ? LIMIT 1");
+    $stmt->bind_param("i", $contactID);
 
     // Build search query with partial, case-insensitive matching
     // Returns records where EITHER firstName OR lastName partially matches
