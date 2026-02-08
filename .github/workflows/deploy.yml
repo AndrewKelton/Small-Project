@@ -24,6 +24,7 @@ jobs:
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         SERVER_IP: 209.97.158.98
+        BRANCH_NAME: ${{ github.ref_name }}
       run: |
         # Setup SSH
         mkdir -p ~/.ssh
