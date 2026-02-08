@@ -52,6 +52,9 @@ document.addEventListener("DOMContentLoaded", function() {
   if (saveButton) {
     saveButton.addEventListener("click", function() {
       updateContact();
+    });
+  }
+
   // search request
   const searchForm = document.getElementById("search");
   if (searchForm) {
