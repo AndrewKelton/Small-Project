@@ -6,11 +6,11 @@ Follow this workflow when contributing to the project:
 
 ### 1. Get the Most Recent Changes
 
-Before starting any work, pull the latest changes from the `dev` and `main` branch:
+Before starting any work, pull the latest changes from the `dev` branch:
 
 ```bash
+git checkout dev
 git pull origin dev
-git pull origin main
 ```
 
 ### 2. Create a Feature Branch

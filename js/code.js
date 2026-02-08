@@ -52,6 +52,12 @@ document.addEventListener("DOMContentLoaded", function() {
   if (saveButton) {
     saveButton.addEventListener("click", function() {
       updateContact();
+  // search request
+  const searchForm = document.getElementById("search");
+  if (searchForm) {
+    searchForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+      displaySearchContactsTable();
     });
   }
 });
@@ -523,7 +529,7 @@ function updateContact() {
   let contactID = urlParams.get('recordID');
 
   const cells = document.querySelectorAll('#selected_contact_row td[contenteditable="true"]');
-
+  
   let firstName = cells[0].textContent.trim();
   let lastName = cells[1].textContent.trim();
   let email = cells[2].textContent.trim();
@@ -582,6 +588,110 @@ function updateContact() {
   } catch (err) {
     document.getElementById("contactActionResult").innerHTML = jsonObject.error;
   }
-
 }
+    
+// Function to search contacts and display search results
+function displaySearchContactsTable()
+{
+  // firstName and lastName entered by the user in the search textfield
+  let firstName = document.getElementById("firstName").value;
+  let lastName = document.getElementById("lastName").value;
+
+  // clear search results table upon opening page
+  document.getElementById("search_contacts_table").innerHTML = "";
+
+  if (firstName == "" && lastName == "") { // enter if firstName and lastName are empty
+
+    console.log("firstName and lastName are empty!");
+    return;
+  }
+
+  // json being sent out with the http request
+  let strObj = { firstName: firstName, lastName: lastName };
+  let jsonPayload = JSON.stringify(strObj);
+
+  
+  // post http request
+  let url = urlBase + 'api/searchcontact' + extension;
+  let xhr = new XMLHttpRequest();
+  xhr.open("POST", url, true);
+  xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+  
+  try {
+
+    xhr.onreadystatechange = function() {
+
+      if (this.readyState == 4 && this.status == 200) {
+        
+        // parse json response from api
+        let jsonObjArr = JSON.parse(xhr.responseText);
+        let numContacts = jsonObjArr.length;
+        let strHTML = "";
+
+        // search results header
+        strHTML = "<h3>SEARCH RESULTS:</h3>";
+
+        if (numContacts == 0) { // enter if the search results json response is empty
+
+          document.getElementById("search_contacts_table").innerHTML = "<p>No matches were found in your contacts list!</p>";
+          return;
+        }
+        else { // enter if the search results table has >=1 contacts
+
+          // number of columns in the search results table (does not include 'ID' and 'UserID' sent from api)
+          let recordCol = Object.keys(jsonObjArr[0]).length;
+          let col = recordCol - 1;
+
+          // header labels for the search results table
+          let headerLabelsArr = ["First Name", "Last Name", "Email", "Phone Number", "Update or Delete"];
+
+          // object (represents row of search results table) key for database record
+          let keyArr = Object.keys(jsonObjArr[0]);
+
+          // start table
+          strHTML += '<table id="search_contacts_table">';
+
+          // table header
+          for (let i = 0; i < col; i++) { // loop thru table columns
+
+            strHTML += '<th>' + headerLabelsArr[i] + '</th>';
+          }          
+
+          for (let i = 0; i < numContacts; i++) {
+
+            // start table row
+            strHTML += '<tr>';
+
+            for (let j = 2; j < recordCol; j++) { // loop thru table columns
+
+              strHTML += '<td>' + jsonObjArr[i][keyArr[j]] + '</td>';
+            }
+
+            // add button into last column of each row
+            strHTML += '<td>' + '<button id="' + jsonObjArr[i][keyArr[0]] + '" name="modify_button" type="button" class="btn btn-primary">Primary</button>' + '</td>';
+
+            // end table row
+            strHTML += '</tr>'
+          }
+
+          // end table
+          strHTML += '</table>';
+        } // end else
+
+        // set markup for search results table
+        document.getElementById("search_contacts_table").innerHTML = strHTML;
+
+      } // end onreadystatechange function
+    }; // end try block
+
+    // send http request to api
+    xhr.send(jsonPayload);
+  } // end try block
+  catch (err) {
+
+    document.getElementById("search_contacts_table").innerHTML = err.message;
+  } 
+  
+} // end function displaySearchContactsTable
+
 

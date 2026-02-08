@@ -56,6 +56,30 @@
     <button type="button" id="logoutButton" class="buttons" onclick="doLogout();"> Log Out </button>
   </div>
 
+  <h3>Search Contact List:</h3>
+  <form id="search" class="w-100 p-3" style="max-width: 400px;">
+    <div class="mb-3">
+      <label for="firstName" class="form-label">First Name</label>
+      <input type="text" class="form-control" id="firstName" name="search_firstName" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="lastName" class="form-label">Last Name</label>
+      <input type="text" class="form-control" id="lastName" name="search_lastName" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-25">Search</button>
+    <span class="text-danger d-block mt-2 text-center" id="searchResult"></span>
+  </form>
+
+  <!-- searched contacts results table -->
+  <div id="search_contacts_table" style="margin-top: 25px">
+    <script>
+      readCookie();
+      displaySearchContactsTable();
+    </script>
+  </div>
+
   <!-- entire user's contacts table -->
   <div id="user_contacts_table" style="margin-top: 25px">
     <script>
