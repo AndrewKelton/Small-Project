@@ -5,45 +5,146 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script type="text/javascript" src="js/code.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-  <title>Add Contact</title> 
+  <title>Add Contact</title>
   
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f4f7f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    /* Panel Structure */
+    .panel-container {
+      background-color: #ffffff;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      box-sizing: border-box;
+      position: relative;
+      padding-top: 60px; /* Added extra padding at top to make room for back button */
+    }
+
+    .professional-form h2 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 24px;
+      color: #333;
+    }
+
+    .professional-form p {
+      margin-bottom: 25px;
+      color: #666;
+      font-size: 14px;
+    }
+
+    /* Form Groups */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      color: #444;
+    }
+
+    /* Input Fields */
+    .form-group input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      box-sizing: border-box;
+    }
+
+    /* Focus State */
+    .form-group input:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+    }
+
+    /* Submit Button */
+    .submit-btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background-color: #007bff;
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-top: 10px;
+    }
+
+    .submit-btn:hover {
+      background-color: #0056b3;
+    }
+
+    .back-btn {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+    }
+
+    .form-message {
+      margin-top: 15px;
+      text-align: center;
+    }
+  </style>
+
   <script type="text/javascript">
-	  document.addEventListener('DOMContentLoaded', function() 
-	{
-		readCookie();
-	}, false);
-	</script>
+    document.addEventListener('DOMContentLoaded', function() 
+    {
+      readCookie();
+    }, false);
+  </script>
 
 </head>
 
 <body>
-  <a href="contacts.html" class="btn btn-secondary position-absolute top-0 start-0 m-3">Back</a>
-  
-  <!-- <br><br><br> -->
+  <div class="panel-container">
+    <a href="contacts.html" class="btn btn-secondary back-btn">Back</a>
 
-  <!-- <h1 id="title">Add Contact</h1> -->
+    <form id="add-contact" class="professional-form">
+      <h2>Add Contact</h2>
+      <p>Enter the details of your new contact.</p>
 
-  <div class="d-flex justify-content-center align-items-center min-vh-100 px-3">
-    <form id="add-contact" class="w-100 p-3" style="max-width: 400px;">
-      <div class="mb-3">
-        <label for="firstname" class="form-label">First Name</label>
-        <input type="text" class="form-control" id="firstname" required>
+      <div class="form-group">
+        <label for="firstname">First Name</label>
+        <input type="text" id="firstname" placeholder="John" required>
       </div>
-      <div class="mb-3">
-        <label for="lastname" class="form-label">Last Name</label>
-        <input type="text" class="form-control" id="lastname" required>
-      </div>
-      <div class="mb-3">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control" id="email" required>
-      </div>
-      <div class="mb-3">
-        <label for="phone" class="form-label">Phone</label>
-        <input type="tel" class="form-control" id="phone" required>
-      </div>
-      <button type="submit" class="btn btn-primary w-25">Add Contact</button>
-      <span class="text-danger d-block mt-2 text-center" id="addContactResult"></span>
 
+      <div class="form-group">
+        <label for="lastname">Last Name</label>
+        <input type="text" id="lastname" placeholder="Doe" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="john@example.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone</label>
+        <input type="tel" id="phone" placeholder="(123) 456-7890" required>
+      </div>
+
+      <button type="submit" class="submit-btn">Add Contact</button>
+      <span class="form-message text-danger" id="addContactResult"></span>
     </form>
   </div>
 </body>
