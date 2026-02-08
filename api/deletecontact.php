@@ -1,6 +1,6 @@
 <?php
     // Load .env file
-    $envFile = DIR . '/../.env';
+    $envFile = __DIR__ . '/../.env';
     if (file_exists($envFile)) {
         $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         foreach ($lines as $line) {
@@ -30,8 +30,7 @@
     // database connection error
     if ($conn->connect_errno) {
         http_response_code(400);
-        header('Content-type: text/plain');
-        echo $conn->connect_error;
+        returnWithError($conn->connect_error);
         exit();
     }
     // Validation
@@ -59,10 +58,11 @@
     $stmt = $conn->prepare("DELETE FROM Contacts WHERE ID = ? LIMIT 1");
     $stmt->bind_param("i", $contactID);
 
-    if ($stmt->execute() === TRUE)
+    if ($stmt->execute() === TRUE) {
         returnWithError("");
-    else
+    } else {
         returnWithError("Failed to delete contact");
+    }
 
     $stmt->close();
     $conn->close();
