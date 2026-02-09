@@ -5,64 +5,163 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script type="text/javascript" src="js/code.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-  <title>Selected Contact Page</title> 
+  <link rel="stylesheet" href="css/contacts.css"/>
+  <title>Update Contact</title> 
 
   <style>
-    #loginDiv
-    {
-        font-size: 30px;
-        width: 70%;
-        margin-left: 15%;
-        padding: 25px;
-        background-color: #b2b2b2;
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f4f7f9;
+      margin: 0;
     }
 
-    #loginDiv
-    {
-        font-size: 30px;
-        width: 70%;
-        margin-left: 15%;
-        padding: 25px;
-        background-color: #b2b2b2;
+    .page-title {
+      text-align: center;
+      margin: 40px 0 30px 0;
+      font-size: 28px;
+      color: #333;
+      font-weight: 600;
     }
 
-    table
-    {
+    .content-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    table {
       border-collapse: collapse;
-
+      width: 100%;
+      background-color: #ffffff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
     th, td {
-      border: 1px solid black; 
-      padding: 8px; 
+      border: 1px solid #e0e0e0; 
+      padding: 12px 16px; 
       text-align: center; 
     }
 
-    th 
-    {
-      background-color: lightgrey; 
-      color: royalblue; 
+    th {
+      background-color: #f8f9fa; 
+      color: #007bff; 
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 14px;
+      letter-spacing: 0.5px;
     }
 
+    td {
+      color: #555;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin-top: 30px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      padding: 12px 32px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-width: 160px;
+    }
+
+    #saveContactButton {
+      background-color: #28a745;
+      color: white;
+    }
+
+    #saveContactButton:hover {
+      background-color: #218838;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+    }
+
+    #deleteContactButton {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    #deleteContactButton:hover {
+      background-color: #c82333;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin: 20px 0;
+    }
+
+    #contactActionResult {
+      text-align: center;
+      display: block;
+      margin-top: 15px;
+      font-weight: 500;
+    }
+
+    @media (max-width: 576px) {
+      .action-btn {
+        width: 100%;
+        min-width: auto;
+      }
+      
+      .button-container {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
   </style>
+
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() 
+    {
+      readCookie();
+    }, false);
+  </script>
 
 </head>
 
 <body>
-  <h1>Selected Contact Page</h1>
+  <header class="site-header">
+    <div class="left-side-header">
+      <img src="images/logo.png" alt="Product Logo" class="logo-image">
+      <span class="product-name">Lucky Retriever Contacts</span>
+    </div>
+    <button type="button" id="logoutButton" class="btn btn-secondary" onclick="doLogout();">Log Out</button>
+  </header>
 
-  <!-- entire user's contacts table -->
-  <div id="selected_contact_table" style="margin-top: 25px">
-    <script>
-      readCookie();
-      displaySelectedContactTable();
-    </script>
-  </div>
+  <div class="content-container">
+    <a href="contacts.html" class="btn btn-secondary back-btn">Back to Contacts</a>
+    
+    <h1 class="page-title">Update Contact</h1>
 
-  <div class="d-flex justify-content-center align-items-center min-vh-100 px-3">
-    <button id="saveContactButton" type="button" class="btn btn-success w-25">Save Changes</button>
-    <button id="deleteContactButton" type="submit" class="btn btn-primary w-25">Delete</button>
-    <span class="text-danger d-block mt-2 text-center" id="contactActionResult"></span>
+    <!-- selected contact table -->
+    <div id="selected_contact_table">
+      <script>
+        readCookie();
+        displaySelectedContactTable();
+      </script>
+    </div>
+
+    <div class="button-container">
+      <button id="saveContactButton" type="button" class="action-btn">Save Changes</button>
+      <button id="deleteContactButton" type="button" class="action-btn">Delete Contact</button>
+    </div>
+    
+    <span class="text-danger" id="contactActionResult"></span>
   </div>
 
 </body>
