@@ -309,8 +309,8 @@ function displayContactsTable()
         let numContacts = jsonObjArr.length;
         let strHTML = "";
 
-        // contact list header
-        strHTML = "<h3>CONTACT LIST:</h3>";
+        // contacts list header
+        strHTML = "<h2>Contacts List</h2>";
 
         if (numContacts == 0) { // enter if the contacts table is empty
 
@@ -324,19 +324,26 @@ function displayContactsTable()
           let col = recordCol - 1;
 
           // header labels for the contacts table
-          let headerLabelsArr = ["First Name", "Last Name", "Email", "Phone Number", "Update or Delete"];
+          let headerLabelsArr = ["First Name", "Last Name", "Email", "Phone Number", "Click to Update or Delete"];
 
           // object (represents row of contacts table) key for database record
           let keyArr = Object.keys(jsonObjArr[0]);
 
           // start table
-          strHTML += '<table id="user_contacts_table">';
+          strHTML += '<table id="user_contacts_table" class="contacts-table">';
+
+          // caption
+          strHTML += '<caption>Table below displays your entire Contacts List</caption>';
 
           // table header
+          strHTML += '<thead><tr>';
+
           for (let i = 0; i < col; i++) { // loop thru table columns
 
             strHTML += '<th>' + headerLabelsArr[i] + '</th>';
-          }          
+          }      
+
+          strHTML += '</tr></thead><tbody>';    
 
           for (let i = 0; i < numContacts; i++) {
 
@@ -349,14 +356,14 @@ function displayContactsTable()
             }
 
             // add button into last column of each row
-            strHTML += '<td>' + '<button id="' + jsonObjArr[i][keyArr[0]] + '" name="modify_button" type="button" class="btn btn-primary" onclick="window.location.href=\'selected_contact.html?id=' + jsonObjArr[i][keyArr[0]] + '\'">Primary</button>' + '</td>';
+            strHTML += '<td>' + '<button id="' + jsonObjArr[i][keyArr[0]] + '" name="modify_button" type="button" class="btn btn-primary" onclick="window.location.href=\'selected_contact.html?id=' + jsonObjArr[i][keyArr[0]] + '\'">Update or Delete</button>' + '</td>';
 
             // end table row
             strHTML += '</tr>'
           }
 
           // end table
-          strHTML += '</table>';
+          strHTML += '</tbody></table>';
         } // end else
 
         // set markup for contacts table
@@ -409,8 +416,8 @@ function displaySelectedContactTable()
         let numContacts = jsonObjArr.length;
         let strHTML = "";
 
-        // contact list header
-        strHTML = "<h3>SELECTED CONTACT:</h3>";
+        // contacts list header
+        strHTML = "<h2>Selected Contact</h2>";
 
         if (numContacts == 0) { // enter if the contacts table is empty
 
@@ -430,16 +437,20 @@ function displaySelectedContactTable()
           let keyArr = Object.keys(jsonObjArr[0]);
 
           // start table
-          strHTML += '<table id="selected_contact_table">';
+          strHTML += '<table id="selected_contact_table" class="contacts-table">';
 
           // table header
+          strHTML += '<thead><tr>';
+
           for (let i = 0; i < col; i++) { // loop thru table columns
 
             strHTML += '<th>' + headerLabelsArr[i] + '</th>';
           } 
 
+          strHTML += '</tr></thead>';
+
           // start table row
-          strHTML += '<tr id="selected_contact_row">';         
+          strHTML += '<tbody><tr id="selected_contact_row">';         
 
           // find the recordID
           for (let i = 0; i < numContacts; i++) {
@@ -462,7 +473,7 @@ function displaySelectedContactTable()
           }
 
           // end table row
-          strHTML += '</tr>'
+          strHTML += '</tr></tbody>';
 
           // end table
           strHTML += '</table>';
@@ -632,7 +643,7 @@ function displaySearchContactsTable()
         let strHTML = "";
 
         // search results header
-        strHTML = "<h3>SEARCH RESULTS:</h3>";
+        strHTML = "<h2>Search Results</h2>";
 
         if (numContacts == 0) { // enter if the search results json response is empty
 
@@ -646,19 +657,26 @@ function displaySearchContactsTable()
           let col = recordCol - 1;
 
           // header labels for the search results table
-          let headerLabelsArr = ["First Name", "Last Name", "Email", "Phone Number", "Update or Delete"];
+          let headerLabelsArr = ["First Name", "Last Name", "Email", "Phone Number", "Click to Update or Delete"];
 
           // object (represents row of search results table) key for database record
           let keyArr = Object.keys(jsonObjArr[0]);
 
           // start table
-          strHTML += '<table id="search_contacts_table">';
+          strHTML += '<table id="search_contacts_table" class="contacts-table">';
+
+          // add caption
+          strHTML += '<caption>Table below displays search results (based on partial matches) from your Contacts List</caption>';
 
           // table header
+          strHTML += '<thead><tr>';
+
           for (let i = 0; i < col; i++) { // loop thru table columns
 
             strHTML += '<th>' + headerLabelsArr[i] + '</th>';
-          }          
+          }
+
+          strHTML += '</tr></thead><tbody>';          
 
           for (let i = 0; i < numContacts; i++) {
 
@@ -671,14 +689,14 @@ function displaySearchContactsTable()
             }
 
             // add button into last column of each row
-            strHTML += '<td>' + '<button id="' + jsonObjArr[i][keyArr[0]] + '" name="modify_button" type="button" class="btn btn-primary">Primary</button>' + '</td>';
+            strHTML += '<td>' + '<button id="' + jsonObjArr[i][keyArr[0]] + '" name="modify_button" type="button" class="btn btn-primary">Update or Delete</button>' + '</td>';
 
             // end table row
             strHTML += '</tr>'
           }
 
           // end table
-          strHTML += '</table>';
+          strHTML += '</tbody></table>';
         } // end else
 
         // set markup for search results table
