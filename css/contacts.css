@@ -1,0 +1,165 @@
+
+
+.site-header {
+  display: flex;
+  justify-content: space-between; /* puts logo/product-name and logout button on opposite sides of page */
+  align-items: center; /* vertically center within container */
+  height: 80px; /* height of the container */
+  background-color: #0D6EFD;
+  color: white; 
+  padding: 0 20px; /* padding on the sides */
+  width: 100%; /* header spans full width of window */
+}
+
+.left-side-header {
+  display:flex;
+  align-items: center; /* vertically center within container */
+  height: 80px; /* height of the container */ 
+  width: 100%; /* header spans full width container space */
+}
+
+.site-header button {
+  display: flex;
+  align-items: center; /* vertically center within container */
+  height: 50%; /* height of the container */ 
+  width: 10%; /* header spans full width container space */
+  margin-right: 20px;
+  justify-content: center; /* center button label horizontally */
+}
+
+.logo-image {
+  height: 70%; /* height of image relative to container */
+  width: auto; /* maintain image aspect ratio */
+  margin-right: 30px; /* spacing between logo and product name */
+  object-fit: contain; /* allows image to scale without stretching */
+
+}
+
+.product-name {
+  font-size: 2.0em; 
+  font-weight: bold;
+  font-family: sans-serif;
+}
+
+.main-message-container {
+  display: flex; 
+  flex-direction: column;
+  gap: 10px; 
+  padding: 20px;
+  border: 1px solid #DEE2E6; 
+  border-radius: 10px; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); 
+  background: white;
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 25px;
+}
+
+.search-input-container, .table-container {
+  display: flex; 
+  flex-direction: column;
+  gap: 10px; 
+  padding: 20px;
+  border: 1px solid #DEE2E6; 
+  border-radius: 10px; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); 
+  background: white;
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 25px;
+}
+
+.main-message-container h1 {
+  font-size: 2.5em;
+  font-family: sans-serif;
+  font-weight: bold;
+  color: #030303;
+  margin: 0; 
+}
+
+.search-input-container h2 {
+  font-size: 2.0em;
+  font-family: sans-serif;
+  font-weight: bold;
+  color: 030303;
+  margin: 0; 
+}
+
+.search-input-container h3 {
+  font-size: 1.0em;
+  font-family: sans-serif;
+  font-weight: lighter;
+  color: #030303;
+  margin: 0; 
+}
+
+.table-container h2 {
+  font-size: 1.5em;
+  font-family: sans-serif;
+  font-weight: bold;
+  color: #030303;
+  margin: 0; 
+}
+
+.contacts-table {
+  border-collapse: collapse; 
+  /*margin: 25px 0;*/
+  font-size: 0.9em;
+  font-family: sans-serif;
+  min-width: 400px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15); /* add shadow */
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.contacts-table thead tr {
+  background-color: #0D6EFD; 
+  color: white;
+  text-align: left;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.contacts-table th, td {
+  padding: 12px 15px; 
+  border: 1px solid rgb(220, 220, 220); 
+}
+
+.contacts-table tbody tr {
+  border-bottom: 1px solid rgb(220, 220, 220);
+}
+
+/* alternating row colors */
+.contacts-table tbody tr:nth-of-type(even) {
+  background-color: rgb(240, 240, 240);
+}
+
+.contacts-table tbody tr:last-of-type {
+  border-bottom: 2px solid #0D6EFD; 
+}
+
+/* hover effect */
+.contacts-table tbody tr:hover {
+  background-color: darkgrey;
+  cursor: pointer;
+}
+
+.contacts-table th:last-of-type, td:last-of-type {
+  text-align: center;
+}
+
+.table-container caption {
+  caption-side:top;
+  text-align: left;
+  font-style: italic;
+  color: #666;
+  padding-bottom: 8px;
+}
+
+  
+
+
+
+
+
