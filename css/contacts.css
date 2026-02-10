@@ -1,5 +1,3 @@
-
-
 .site-header {
   display: flex;
   justify-content: space-between; /* puts logo/product-name and logout button on opposite sides of page */
@@ -157,7 +155,25 @@
   padding-bottom: 8px;
 }
 
-  
+/* Responsive: Prevent table overflow on mobile */
+@media (max-width: 767px) {
+  .table-container {
+    width: 100vw;
+    min-width: 0;
+    padding: 8px;
+    overflow-x: auto;
+    box-sizing: border-box;
+  }
+  .contacts-table {
+    min-width: 500px;
+    width: 100%;
+    display: block;
+    overflow-x: auto;
+    box-sizing: border-box;
+  }
+}
+
+
 
 
 
