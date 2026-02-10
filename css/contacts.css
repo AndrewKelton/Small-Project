@@ -173,6 +173,45 @@
   }
 }
 
+/* Responsive header styles for mobile */
+@media (max-width: 767px) {
+  .site-header {
+    flex-direction: column;
+    align-items: stretch;
+    height: auto;
+    padding: 10px 8px;
+  }
+  .left-side-header {
+    flex-direction: row;
+    align-items: center;
+    height: auto;
+    width: 100%;
+    margin-bottom: 8px;
+  }
+  .logo-image {
+    height: 40px;
+    margin-right: 12px;
+  }
+  .product-name {
+    font-size: 1.2em;
+    word-break: break-word;
+    flex: 1;
+    min-width: 0;
+  }
+  .site-header button {
+    width: auto;
+    min-width: 90px;
+    font-size: 1em;
+    height: 40px;
+    margin: 0 auto 0 0;
+    white-space: nowrap;
+    padding: 6px 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
 
 
 
