@@ -165,31 +165,35 @@
     box-sizing: border-box;
   }
   .contacts-table {
-    min-width: 500px;
+    min-width: 320px;
     width: 100%;
     display: block;
     overflow-x: auto;
     box-sizing: border-box;
+    word-break: break-word;
+  }
+  .contacts-table th,
+  .contacts-table td {
+    font-size: 0.8em;
+    white-space: normal;
+    word-break: break-word;
+    padding: 8px 6px;
   }
 }
 
 /* Improved responsive header styles for mobile */
 @media (max-width: 767px) {
   .site-header {
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
+    flex-direction: column;
+    align-items: stretch;
     height: auto;
     padding: 10px 8px;
     gap: 8px;
   }
   .left-side-header {
-    flex: 1 1 0;
-    min-width: 0;
     flex-direction: row;
     align-items: center;
-    height: auto;
-    width: auto;
+    width: 100%;
     margin-bottom: 0;
   }
   .logo-image {
@@ -201,9 +205,10 @@
     word-break: break-word;
     flex: 1 1 0;
     min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    overflow: visible;
+    text-overflow: unset;
+    white-space: normal;
+    line-height: 1.2;
   }
   .site-header button {
     width: auto;
@@ -218,10 +223,27 @@
     justify-content: center;
     flex-shrink: 0;
   }
-  .contacts-table,
+  .table-container {
+    width: 100vw;
+    min-width: 0;
+    padding: 8px;
+    overflow-x: auto;
+    box-sizing: border-box;
+  }
+  .contacts-table {
+    min-width: 320px;
+    width: 100%;
+    display: block;
+    overflow-x: auto;
+    box-sizing: border-box;
+    word-break: break-word;
+  }
   .contacts-table th,
   .contacts-table td {
-    font-size: 0.75em;
+    font-size: 0.8em;
+    white-space: normal;
+    word-break: break-word;
+    padding: 8px 6px;
   }
 }
 
