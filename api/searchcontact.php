@@ -22,6 +22,7 @@
     $pwd = getenv('DB_PASS');
 
     // frontend input parameters
+    $userID = $inData["userID"];
     $firstName = $inData["firstName"] ?? "";
     $lastName = $inData["lastName"] ?? "";
 
@@ -37,8 +38,7 @@
     }
 
     // Build search query with partial, case-insensitive matching
-    // Returns records where EITHER firstName OR lastName partially matches
-    $stmt = $conn->prepare("SELECT * FROM Contacts WHERE LOWER(firstName) LIKE ? OR LOWER(lastName) LIKE ?");
+    $stmt = $conn->prepare("SELECT * FROM Contacts WHERE UserID = ? AND (LOWER(firstName) LIKE ? OR LOWER(lastName) LIKE ?)");
 
     if (!$stmt) {
         http_response_code(500);
@@ -52,7 +52,7 @@
     $firstNameParam = "%" . strtolower($firstName) . "%";
     $lastNameParam = "%" . strtolower($lastName) . "%";
 
-    $stmt->bind_param("ss", $firstNameParam, $lastNameParam);
+    $stmt->bind_param("iss", $userID, $firstNameParam, $lastNameParam);
     $stmt->execute();
 
     $result = $stmt->get_result();
