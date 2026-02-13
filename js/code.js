@@ -616,6 +616,7 @@ function displaySearchContactsTable()
 
   if (firstName == "" && lastName == "") { // enter if firstName and lastName are empty
 
+    document.getElementById("search_contacts_table").innerHTML = "Search Results (please enter first and/or last names above)";
     console.log("firstName and lastName are empty!");
     return;
   }
