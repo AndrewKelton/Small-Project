@@ -498,6 +498,11 @@ function displaySelectedContactTable()
 // Function to delete selected contact
 function deleteContact() {
 
+  // confirm the selected user
+  if (!confirm("Are you sure you want to delete this contact? This action cannot be undone.")) {
+    return; 
+  }
+
   // get contactId
   const urlParams = new URLSearchParams(window.location.search);
   let contactID = urlParams.get('recordID');
