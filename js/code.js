@@ -621,7 +621,7 @@ function displaySearchContactsTable()
   }
 
   // json being sent out with the http request
-  let strObj = { firstName: firstName, lastName: lastName };
+  let strObj = { userID: userId, firstName: firstName, lastName: lastName };
   let jsonPayload = JSON.stringify(strObj);
 
   
