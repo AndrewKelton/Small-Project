@@ -23,6 +23,7 @@
 
     // frontend input parameters
     $userID = $inData["UserID"];
+    $pageNumber = max(1, $inData["PageNumber"] ?? 1);
 
     // database connection
     $conn = new mysqli($host, $user, $pwd, $db);
@@ -35,8 +36,13 @@
         exit();
     }
 
-    $stmt = $conn->prepare("SELECT * FROM Contacts WHERE UserID = ?");
-    $stmt->bind_param("i", $userID);
+    // rows per page
+    $rowsPerPage = 10;
+    // pagination offset
+    $offsetRow = ($pageNumber - 1) * $rowsPerPage;
+
+    $stmt = $conn->prepare("SELECT * FROM Contacts WHERE UserID = ? LIMIT ? OFFSET ?");
+    $stmt->bind_param("iii", $userID, $rowsPerPage, $offsetRow);
 
     if($stmt->execute()) {
         $result = $stmt->get_result();
