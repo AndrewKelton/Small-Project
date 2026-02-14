@@ -386,8 +386,6 @@ function displayContactsTable()
 // Function to display the selected contact
 function displaySelectedContactTable()
 {
-  console.log("userId = " + userId);
-
   // clear contacts table upon opening page
   document.getElementById("selected_contact_table").innerHTML = "";
 
@@ -396,11 +394,11 @@ function displaySelectedContactTable()
   console.log("contactRecordID = " + contactRecordID);
 
   // json being sent out with the http request
-  let strObj = { UserID: userId };
+  let strObj = { ID: contactRecordID };
   let jsonPayload = JSON.stringify(strObj);
   
   // post http request
-  let url = urlBase + 'api/seecontacts' + extension;
+  let url = urlBase + 'api/selectedcontact' + extension;
   let xhr = new XMLHttpRequest();
   xhr.open("POST", url, true);
   xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
@@ -452,26 +450,19 @@ function displaySelectedContactTable()
           // start table row
           strHTML += '<tbody><tr id="selected_contact_row">';         
 
-          // find the recordID
-          for (let i = 0; i < numContacts; i++) {
+          // get information from received json
 
-            if (jsonObjArr[i][keyArr[0]] == contactRecordID) {
+          let firstName = jsonObjArr[0][keyArr[2]];
+          let lastName = jsonObjArr[0][keyArr[3]];
+          let email = jsonObjArr[0][keyArr[4]];
+          let phone = jsonObjArr[0][keyArr[5]];
 
-              let firstName = jsonObjArr[i][keyArr[2]];
-              let lastName = jsonObjArr[i][keyArr[3]];
-              let email = jsonObjArr[i][keyArr[4]];
-              let phone = jsonObjArr[i][keyArr[5]];
-
-              // make editable 
-              strHTML += '<td contenteditable="true" data-field="firstName">' + firstName + '</td>';
-              strHTML += '<td contenteditable="true" data-field="lastName">' + lastName + '</td>';
-              strHTML += '<td contenteditable="true" data-field="email">' + email + '</td>';
-              strHTML += '<td contenteditable="true" data-field="phone">' + phone + '</td>'
-              
-              break;
-            }
-          }
-
+          // make editable 
+          strHTML += '<td contenteditable="true" data-field="firstName">' + firstName + '</td>';
+          strHTML += '<td contenteditable="true" data-field="lastName">' + lastName + '</td>';
+          strHTML += '<td contenteditable="true" data-field="email">' + email + '</td>';
+          strHTML += '<td contenteditable="true" data-field="phone">' + phone + '</td>'
+          
           // end table row
           strHTML += '</tr></tbody>';
 
