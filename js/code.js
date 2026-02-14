@@ -1,7 +1,8 @@
 // code.js
 
-/* Test this locally with python -m http.server 3000 */
+/* Test this locally with php -S localhost:8000 */
 
+// const urlBase = 'http://localhost:8000/';
 const urlBase = 'http://cop4331-pal.com/'; // change this to server address
 const extension = '.php';
 
@@ -306,6 +307,7 @@ function displayContactsTable()
         
         // parse json response from api
         let jsonObjArr = JSON.parse(xhr.responseText);
+        console.log(jsonObjArr)
         let numContacts = jsonObjArr.length;
         let strHTML = "";
 
@@ -324,7 +326,7 @@ function displayContactsTable()
           let col = recordCol - 1;
 
           // header labels for the contacts table
-          let headerLabelsArr = ["First Name", "Last Name", "Email", "Phone Number", "Click to Update or Delete"];
+          let headerLabelsArr = ["First Name", "Last Name", "Email", "Phone Number", "Date Created", "Click to Update or Delete"];
 
           // object (represents row of contacts table) key for database record
           let keyArr = Object.keys(jsonObjArr[0]);
@@ -429,7 +431,7 @@ function displaySelectedContactTable()
           let col = recordCol - 2;
 
           // header labels for the contacts table
-          let headerLabelsArr = ["First Name", "Last Name", "Email", "Phone Number"];
+          let headerLabelsArr = ["First Name", "Last Name", "Email", "Phone Number", "Date Created"];
 
           // object (represents row of contacts table) key for database record
           let keyArr = Object.keys(jsonObjArr[0]);
@@ -456,12 +458,14 @@ function displaySelectedContactTable()
           let lastName = jsonObjArr[0][keyArr[3]];
           let email = jsonObjArr[0][keyArr[4]];
           let phone = jsonObjArr[0][keyArr[5]];
+          let dateCreated = jsonObjArr[0][keyArr[6]];
 
           // make editable 
           strHTML += '<td contenteditable="true" data-field="firstName">' + firstName + '</td>';
           strHTML += '<td contenteditable="true" data-field="lastName">' + lastName + '</td>';
           strHTML += '<td contenteditable="true" data-field="email">' + email + '</td>';
-          strHTML += '<td contenteditable="true" data-field="phone">' + phone + '</td>'
+          strHTML += '<td contenteditable="true" data-field="phone">' + phone + '</td>';
+          strHTML += '<td contenteditable="false" data-field="dateCreated">' + dateCreated + '</td>';
           
           // end table row
           strHTML += '</tr></tbody>';
@@ -654,7 +658,7 @@ function displaySearchContactsTable()
           let col = recordCol - 1;
 
           // header labels for the search results table
-          let headerLabelsArr = ["First Name", "Last Name", "Email", "Phone Number", "Click to Update or Delete"];
+          let headerLabelsArr = ["First Name", "Last Name", "Email", "Phone Number", "Date Created", "Click to Update or Delete"];
 
           // object (represents row of search results table) key for database record
           let keyArr = Object.keys(jsonObjArr[0]);
