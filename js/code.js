@@ -9,6 +9,7 @@ const extension = '.php';
 let userId = 0;
 let firstName = "";
 let lastName = "";
+let pageNum = 1; // page # to track current user's page in contacts
 const ids = [];
 
 /* event listeners when the page loads */
@@ -88,6 +89,7 @@ function doLogin() {
   userId = 0;
   firstName = "";
   lastName = "";
+  pageNum = 1;
   
   let loginName = document.getElementById("loginName").value;
   let loginPassword = document.getElementById("loginPassword").value;
@@ -290,7 +292,7 @@ function displayContactsTable()
   document.getElementById("user_contacts_table").innerHTML = "";
 
   // json being sent out with the http request
-  let strObj = { UserID: userId };
+  let strObj = { UserID: userId, PageNumber: pageNum};
   let jsonPayload = JSON.stringify(strObj);
   
   // post http request
@@ -366,6 +368,13 @@ function displayContactsTable()
 
           // end table
           strHTML += '</tbody></table>';
+          
+          // add pagination controls
+          strHTML += '<div class="pagination-controls" style="margin-top: 20px; text-align: center;">';
+          strHTML += '<button id="prevPageBtn" onclick="prevPage()" class="btn btn-secondary" ' + (pageNum === 1 ? 'disabled' : '') + '>Previous</button>';
+          strHTML += '<span style="margin: 0 15px;">Page ' + pageNum + '</span>';
+          strHTML += '<button id="nextPageBtn" onclick="nextPage()" class="btn btn-secondary" ' + (numContacts < 10 ? 'disabled' : '') + '>Next</button>';
+          strHTML += '</div>';
         } // end else
 
         // set markup for contacts table
@@ -717,3 +726,15 @@ function displaySearchContactsTable()
 } // end function displaySearchContactsTable
 
 
+/* Pagination Functions */
+function nextPage() {
+  pageNum++;
+  displayContactsTable();
+}
+
+function prevPage() {
+  if (pageNum > 1) {
+    pageNum--;
+    displayContactsTable();
+  }
+}
