@@ -377,9 +377,9 @@ function displayContactsTable()
           strHTML += '<div class="pagination-controls" style="margin-top: 20px; text-align: center;">';
           strHTML += '<button id="prevPageBtn" onclick="prevPage()" class="btn btn-secondary" ' + (pageNum === 1 ? 'disabled' : '') + '>Previous</button>';
           strHTML += '<span style="margin: 0 15px;">Page ' + pageNum + '</span>';
-          console.log("numPagesContactsTable (before) = " + numPagesContactsTable);
+          console.log("Before:  numPagesContactsTable = " + numPagesContactsTable + " pageNum = " + pageNum);
           strHTML += '<button id="nextPageBtn" onclick="nextPage()" class="btn btn-secondary" ' + (pageNum >= setNumPagesContactsTable() ? 'disabled' : '') + '>Next</button>';
-          console.log("numPagesContactsTable (after) = " + numPagesContactsTable);
+          console.log("After:  numPagesContactsTable = " + numPagesContactsTable + " pageNum = " + pageNum);
           strHTML += '</div>';
         } // end else
 
