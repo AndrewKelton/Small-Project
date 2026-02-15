@@ -1,0 +1,91 @@
+<?php
+    // Load .env file
+    $envFile = __DIR__ . '/../.env';
+    if (file_exists($envFile)) {
+        $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        foreach ($lines as $line) {
+            if (strpos($line, '=') !== false && strpos($line, '#') !== 0) {
+                list($key, $value) = explode('=', $line, 2);
+                putenv(trim($key) . '=' . trim($value));
+            }
+        }
+    }
+
+    require 'helpers.php';
+
+    $inData = getRequestInfo();
+
+    // Get DB credentials
+    $host = getenv('DB_HOST');
+    $db = getenv('DB_NAME');
+    $user = getenv('DB_USER');
+    $pwd = getenv('DB_PASS');
+
+    // frontend input parameters
+    $userID = $inData["userID"];
+    $firstName = $inData["firstName"] ?? "";
+    $lastName = $inData["lastName"] ?? "";
+
+    // database connection
+    $conn = new mysqli($host, $user, $pwd, $db);
+
+    // database connection error
+    if ($conn->connect_errno) {
+        http_response_code(400);
+        header('Content-type: text/plain');
+        echo $conn->connect_error;
+        exit();
+    }
+
+    // Case 1: Both empty — return empty result
+    if ($firstName === "" && $lastName === "") {
+        header('Content-type: application/json');
+        echo json_encode([]);
+        $conn->close();
+        exit();
+    }
+
+    // Case 2: Only first name provided
+    if ($firstName !== "" && $lastName === "") {
+        $stmt = $conn->prepare("SELECT COUNT(*) FROM Contacts WHERE UserID = ? AND LOWER(FirstName) LIKE ?");
+        $firstNameParam = "%" . strtolower($firstName) . "%";
+        $stmt->bind_param("is", $userID, $firstNameParam);
+    }
+    // Case 3: Only last name provided
+    else if ($firstName === "" && $lastName !== "") {
+        $stmt = $conn->prepare("SELECT COUNT(*) FROM Contacts WHERE UserID = ? AND LOWER(LastName) LIKE ?");
+        $lastNameParam = "%" . strtolower($lastName) . "%";
+        $stmt->bind_param("is", $userID, $lastNameParam);
+    }
+    // Case 4: Both first and last name provided
+    else {
+        $stmt = $conn->prepare("SELECT COUNT(*) FROM Contacts WHERE UserID = ? AND (LOWER(FirstName) LIKE ? OR LOWER(LastName) LIKE ?)");
+        $firstNameParam = "%" . strtolower($firstName) . "%";
+        $lastNameParam = "%" . strtolower($lastName) . "%";
+        $stmt->bind_param("iss", $userID, $firstNameParam, $lastNameParam);
+    }
+
+    if (!$stmt) {
+        http_response_code(500);
+        header('Content-type: application/json');
+        echo json_encode(["error" => "Failed to prepare statement: " . $conn->error]);
+        $conn->close();
+        exit();
+    }
+
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    $pageCount = ceil(($row['COUNT(*)'] / 10));
+
+    if ($stmt){
+        sendResultInfoAsJson(json_encode($pageCount));
+    }
+    else
+    {
+        http_response_code(400);
+    }
+
+    $stmt->close();
+    $conn->close();
+?>
