@@ -797,7 +797,7 @@ function setNumPagesContactsTable()
         // parse json response from api
         let jsonObj = JSON.parse(xhr.responseText);
 
-        console.log("jsonObj = " + jsonObj);
+        console.log("jsonObj = " + jsonObj + " typeof = " + typeof(jsonObj));
 
         return jsonObj;
 
