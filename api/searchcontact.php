@@ -29,7 +29,7 @@
 
 
     // rows per page
-    $rowsPerPage = 20;
+    $rowsPerPage = 10;
     // pagination offset
     $offsetRow = ($pageNumber - 1) * $rowsPerPage;
 
