@@ -11,7 +11,6 @@ let firstName = "";
 let lastName = "";
 let pageNum = 1; // page # to track current user's page in contacts
 let pageNumSearch = 1; // page # to track current user's page in the search results table
-let numPagesContactsTable = setNumPagesContactsTable(); // total number of pages in the contacts table
 const ids = [];
 
 /* event listeners when the page loads */
@@ -374,6 +373,7 @@ function displayContactsTable()
           strHTML += '</tbody></table>';
           
           // add pagination controls
+          let numPagesContactsTable = setNumPagesContactsTable(); // total number of pages in the contacts table
           strHTML += '<div class="pagination-controls" style="margin-top: 20px; text-align: center;">';
           strHTML += '<button id="prevPageBtn" onclick="prevPage()" class="btn btn-secondary" ' + (pageNum === 1 ? 'disabled' : '') + '>Previous</button>';
           strHTML += '<span style="margin: 0 15px;">Page ' + pageNum + '</span>';
