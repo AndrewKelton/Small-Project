@@ -378,8 +378,11 @@ function displayContactsTable()
           strHTML += '<button id="prevPageBtn" onclick="prevPage()" class="btn btn-secondary" ' + (pageNum === 1 ? 'disabled' : '') + '>Previous</button>';
           strHTML += '<span style="margin: 0 15px;">Page ' + pageNum + '</span>';
           console.log("Before:  numPagesContactsTable = " + numPagesContactsTable + " pageNum = " + pageNum);
-          strHTML += '<button id="nextPageBtn" onclick="nextPage()" class="btn btn-secondary" ' + (pageNum >= setNumPagesContactsTable() ? 'disabled' : '') + '>Next</button>';
-          console.log("After:  numPagesContactsTable = " + numPagesContactsTable + " pageNum = " + pageNum);
+          strHTML += '<button id="nextPageBtn" onclick="nextPage()" class="btn btn-secondary" ' + (pageNum >= (let check = setNumPagesContactsTable()) ? 'disabled' : '') + '>Next</button>';
+          console.log("After:  numPagesContactsTable = " + numPagesContactsTable + " typeof = " + typeof(numPagesContactsTable) + " pageNum = " + pageNum + " typeof = " + typeof(pageNum));
+          console.log("check = " + check + " typeof = " + typeof(check));
+          console.log("pageNum >= check:  " + (pageNum >= check));
+          console.log("")
           strHTML += '</div>';
         } // end else
 
