@@ -373,15 +373,14 @@ function displayContactsTable()
           strHTML += '</tbody></table>';
           
           // add pagination controls
-          let numPagesContactsTable = setNumPagesContactsTable(); // total number of pages in the contacts table
+          let numPagesContactsTable = setNumPagesContactsTable();
           strHTML += '<div class="pagination-controls" style="margin-top: 20px; text-align: center;">';
           strHTML += '<button id="prevPageBtn" onclick="prevPage()" class="btn btn-secondary" ' + (pageNum === 1 ? 'disabled' : '') + '>Previous</button>';
           strHTML += '<span style="margin: 0 15px;">Page ' + pageNum + '</span>';
-          console.log("Before:  numPagesContactsTable = " + numPagesContactsTable + " pageNum = " + pageNum);
+          console.log("Before:  numPagesContactsTable = " + numPagesContactsTable + " typeof = " + typeof(numPagesContactsTable) + " pageNum = " + pageNum + " typeof = " + typeof(pageNum));
           strHTML += '<button id="nextPageBtn" onclick="nextPage()" class="btn btn-secondary" ' + (pageNum >= numPagesContactsTable ? 'disabled' : '') + '>Next</button>';
           console.log("After:  numPagesContactsTable = " + numPagesContactsTable + " typeof = " + typeof(numPagesContactsTable) + " pageNum = " + pageNum + " typeof = " + typeof(pageNum));
           console.log("pageNum >= numPagesContactsTable:  " + (pageNum >= numPagesContactsTable));
-          console.log("")
           strHTML += '</div>';
         } // end else
 
@@ -796,7 +795,7 @@ function setNumPagesContactsTable()
         
         // parse json response from api
         let jsonObj = JSON.parse(xhr.responseText);
-
+        
         console.log("jsonObj = " + jsonObj + " typeof = " + typeof(jsonObj));
 
         return jsonObj;
