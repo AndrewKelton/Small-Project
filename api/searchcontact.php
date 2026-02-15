@@ -25,6 +25,13 @@
     $userID = $inData["userID"];
     $firstName = $inData["firstName"] ?? "";
     $lastName = $inData["lastName"] ?? "";
+    $pageNumber = max(1, $inData["PageNumber"] ?? 1);
+
+
+    // rows per page
+    $rowsPerPage = 20;
+    // pagination offset
+    $offsetRow = ($pageNumber - 1) * $rowsPerPage;
 
     // database connection
     $conn = new mysqli($host, $user, $pwd, $db);
@@ -47,22 +54,22 @@
 
     // Case 2: Only first name provided
     if ($firstName !== "" && $lastName === "") {
-        $stmt = $conn->prepare("SELECT * FROM Contacts WHERE UserID = ? AND LOWER(FirstName) LIKE ?");
+        $stmt = $conn->prepare("SELECT * FROM Contacts WHERE UserID = ? AND LOWER(FirstName) LIKE ? LIMIT ? OFFSET ?");
         $firstNameParam = "%" . strtolower($firstName) . "%";
-        $stmt->bind_param("is", $userID, $firstNameParam);
+        $stmt->bind_param("isii", $userID, $firstNameParam, $rowsPerPage, $offsetRow);
     }
     // Case 3: Only last name provided
     else if ($firstName === "" && $lastName !== "") {
-        $stmt = $conn->prepare("SELECT * FROM Contacts WHERE UserID = ? AND LOWER(LastName) LIKE ?");
+        $stmt = $conn->prepare("SELECT * FROM Contacts WHERE UserID = ? AND LOWER(LastName) LIKE ? LIMIT ? OFFSET ?");
         $lastNameParam = "%" . strtolower($lastName) . "%";
-        $stmt->bind_param("is", $userID, $lastNameParam);
+        $stmt->bind_param("isii", $userID, $lastNameParam, $rowsPerPage, $offsetRow);
     }
     // Case 4: Both first and last name provided
     else {
-        $stmt = $conn->prepare("SELECT * FROM Contacts WHERE UserID = ? AND (LOWER(FirstName) LIKE ? OR LOWER(LastName) LIKE ?)");
+        $stmt = $conn->prepare("SELECT * FROM Contacts WHERE UserID = ? AND (LOWER(FirstName) LIKE ? OR LOWER(LastName) LIKE ?) LIMIT ? OFFSET ?");
         $firstNameParam = "%" . strtolower($firstName) . "%";
         $lastNameParam = "%" . strtolower($lastName) . "%";
-        $stmt->bind_param("iss", $userID, $firstNameParam, $lastNameParam);
+        $stmt->bind_param("issii", $userID, $firstNameParam, $lastNameParam, $rowsPerPage, $offsetRow);
     }
 
     if (!$stmt) {
