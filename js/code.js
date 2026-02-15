@@ -10,6 +10,7 @@ let userId = 0;
 let firstName = "";
 let lastName = "";
 let pageNum = 1; // page # to track current user's page in contacts
+let pageNumSearch = 1; // page # to track current user's page in the search results table
 const ids = [];
 
 /* event listeners when the page loads */
@@ -62,6 +63,7 @@ document.addEventListener("DOMContentLoaded", function() {
   if (searchForm) {
     searchForm.addEventListener("submit", function(e) {
       e.preventDefault();
+      pageNumSearch = 1; // start on 1st page for each new search
       displaySearchContactsTable();
     });
   }
@@ -90,6 +92,7 @@ function doLogin() {
   firstName = "";
   lastName = "";
   pageNum = 1;
+  pageNumSearch = 1;
   
   let loginName = document.getElementById("loginName").value;
   let loginPassword = document.getElementById("loginPassword").value;
@@ -631,7 +634,7 @@ function displaySearchContactsTable()
   }
 
   // json being sent out with the http request
-  let strObj = { userID: userId, firstName: firstName, lastName: lastName };
+  let strObj = { firstName: firstName, lastName: lastName, userID: userId, PageNumber: pageNumSearch };
   let jsonPayload = JSON.stringify(strObj);
 
   
@@ -707,6 +710,13 @@ function displaySearchContactsTable()
 
           // end table
           strHTML += '</tbody></table>';
+
+          // add pagination controls
+          strHTML += '<div class="pagination-controls" style="margin-top: 20px; text-align: center;">';
+          strHTML += '<button id="prevPageBtnSearch" onclick="prevPageSearch()" class="btn btn-secondary" ' + (pageNumSearch === 1 ? 'disabled' : '') + '>Previous</button>';
+          strHTML += '<span style="margin: 0 15px;">Page ' + pageNumSearch + '</span>';
+          strHTML += '<button id="nextPageBtnSearch" onclick="nextPageSearch()" class="btn btn-secondary" ' + (numContacts < 10 ? 'disabled' : '') + '>Next</button>';
+          strHTML += '</div>';
         } // end else
 
         // set markup for search results table
@@ -738,3 +748,17 @@ function prevPage() {
     displayContactsTable();
   }
 }
+
+function nextPageSearch() {
+  pageNumSearch++;
+  displaySearchContactsTable();
+}
+
+function prevPageSearch() {
+  if (pageNumSearch > 1) {
+    pageNumSearch--;
+    displaySearchContactsTable();
+  }
+}
+
+
