@@ -661,6 +661,14 @@ function displaySearchContactsTable()
 
         if (numContacts == 0) { // enter if the search results json response is empty
 
+          // case for when the number of contacts is evenly divisible by 10 (i.e. the number of contacts per page)
+          if (pageNumSearch > 1) { // indicates that the 'next page' button went past the last page
+
+            // call prevPageSearch to go back to the final page
+            prevPageSearch();
+            return;
+          }
+
           document.getElementById("search_contacts_table").innerHTML = "<p>No matches were found in your contacts list!</p>";
           return;
         }
