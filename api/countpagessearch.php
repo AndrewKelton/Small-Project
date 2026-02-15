@@ -40,7 +40,7 @@
     // Case 1: Both empty — return empty result
     if ($firstName === "" && $lastName === "") {
         header('Content-type: application/json');
-        echo json_encode([]);
+        echo json_encode(0);
         $conn->close();
         exit();
     }
