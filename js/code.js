@@ -11,6 +11,7 @@ let firstName = "";
 let lastName = "";
 let pageNum = 1; // page # to track current user's page in contacts
 let pageNumSearch = 1; // page # to track current user's page in the search results table
+let numPagesContactsTable = 0; // total number of pages in the contacts table
 const ids = [];
 
 /* event listeners when the page loads */
@@ -376,7 +377,7 @@ function displayContactsTable()
           strHTML += '<div class="pagination-controls" style="margin-top: 20px; text-align: center;">';
           strHTML += '<button id="prevPageBtn" onclick="prevPage()" class="btn btn-secondary" ' + (pageNum === 1 ? 'disabled' : '') + '>Previous</button>';
           strHTML += '<span style="margin: 0 15px;">Page ' + pageNum + '</span>';
-          strHTML += '<button id="nextPageBtn" onclick="nextPage()" class="btn btn-secondary" ' + (numContacts < 10 ? 'disabled' : '') + '>Next</button>';
+          strHTML += '<button id="nextPageBtn" onclick="nextPage()" class="btn btn-secondary" ' + (pageNum >= numPagesContactsTable ? 'disabled' : '') + '>Next</button>';
           strHTML += '</div>';
         } // end else
 
@@ -760,5 +761,54 @@ function prevPageSearch() {
     displaySearchContactsTable();
   }
 }
+
+
+// Function to count number of pages in contacts table
+function setNumPagesContactsTable()
+{
+  // json being sent out with the http request
+  let strObj = { UserID: userId };
+  let jsonPayload = JSON.stringify(strObj);
+  
+  // post http request
+  let url = urlBase + 'api/countpages' + extension;
+  let xhr = new XMLHttpRequest();
+  xhr.open("POST", url, true);
+  xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+  
+  try {
+
+    xhr.onreadystatechange = function() {
+
+      if (this.readyState == 4 && this.status == 200) {
+        
+        // parse json response from api
+        let jsonObj = JSON.parse(xhr.responseText);
+
+        // get information from received json
+        numPagesContactsTable = jsonObj;
+        console.log("numPagesContactsTable = " + numPagesContactsTable);
+
+      } // end onreadystatechange function
+    }; // end try block
+
+    // send http request to api
+    xhr.send(jsonPayload);
+  } // end try block
+  catch (err) {
+
+    console.log("Error in function setNumPagesContactsTable");
+  } 
+        
+} // end function setNumPagesContactsTable
+
+
+
+
+
+
+
+
+
 
 
