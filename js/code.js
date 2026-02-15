@@ -714,7 +714,7 @@ function displaySearchContactsTable()
           // add pagination controls
           strHTML += '<div class="pagination-controls" style="margin-top: 20px; text-align: center;">';
           strHTML += '<button id="prevPageBtnSearch" onclick="prevPageSearch()" class="btn btn-secondary" ' + (pageNumSearch === 1 ? 'disabled' : '') + '>Previous</button>';
-          strHTML += '<span style="margin: 0 15px;">Page ' + pageNum + '</span>';
+          strHTML += '<span style="margin: 0 15px;">Page ' + pageNumSearch + '</span>';
           strHTML += '<button id="nextPageBtnSearch" onclick="nextPageSearch()" class="btn btn-secondary" ' + (numContacts < 10 ? 'disabled' : '') + '>Next</button>';
           strHTML += '</div>';
         } // end else
