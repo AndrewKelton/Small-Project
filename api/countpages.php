@@ -33,9 +33,4 @@
         returnWithError($conn->connect_error);
         exit();
     }
-
-    $stmt = $conn->prepare("SELECT * FROM Contacts WHERE ID = ?");
-    $stmt->bind_param("i", $contactID);
-    $stmt->execute();
-    $result = $stmt->get_result();
 ?>
