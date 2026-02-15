@@ -33,4 +33,23 @@
         returnWithError($conn->connect_error);
         exit();
     }
+
+    $stmt = $conn->prepare("SELECT COUNT(*) FROM Contacts WHERE UserID = ?");
+    $stmt->bind_param("i", $userID);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    $pageNum = ceil(($row['COUNT(*)'] / 10));
+
+    if ($stmt){
+        sendResultInfoAsJson(json_encode($pageNum));
+    }
+    else
+    {
+        http_response_code(400);
+    }
+
+    $stmt->close();
+    $conn->close();
 ?>
