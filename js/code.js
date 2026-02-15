@@ -321,6 +321,13 @@ function displayContactsTable()
 
         if (numContacts == 0) { // enter if the contacts table is empty
 
+          if (pageNum > 1) {
+
+            // page number has gone past the total number of pages, go back 1 page
+            prevPage();
+            return;
+          }
+
           document.getElementById("user_contacts_table").innerHTML = "<p>You currently have no contacts listed!</p>";
           return;
         }
