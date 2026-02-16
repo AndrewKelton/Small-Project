@@ -13,7 +13,7 @@
 
     require 'helpers.php';
 
-    $inData = getRequestInfo();
+    $inData = getRequestInfo(); 
 
     // Get DB credentials
     $host = getenv('DB_HOST');
@@ -23,34 +23,30 @@
 
     // frontend input parameters
     $userID = $inData["UserID"];
-    $pageNumber = max(1, $inData["PageNumber"] ?? 1);
 
     // database connection
     $conn = new mysqli($host, $user, $pwd, $db);
 
     // database connection error
-    if ($conn->connect_error) {
+    if ($conn->connect_errno) {
         http_response_code(400);
-        header('Content-type: text/plain');
-        echo $conn->connect_error;
+        returnWithError($conn->connect_error);
         exit();
     }
 
-    // rows per page
-    $rowsPerPage = 10;
-    // pagination offset
-    $offsetRow = ($pageNumber - 1) * $rowsPerPage;
+    $stmt = $conn->prepare("SELECT COUNT(*) FROM Contacts WHERE UserID = ?");
+    $stmt->bind_param("i", $userID);
+    $stmt->execute();
 
-    $stmt = $conn->prepare("SELECT * FROM Contacts WHERE UserID = ? LIMIT ? OFFSET ?");
-    $stmt->bind_param("iii", $userID, $rowsPerPage, $offsetRow);
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    $pageNum = ceil(($row['COUNT(*)'] / 10));
 
-    if($stmt->execute()) {
-        $result = $stmt->get_result();
-        $contacts = $result->fetch_all(MYSQLI_ASSOC);
-
-        sendResultInfoAsJson(json_encode($contacts));
+    if ($stmt){
+        sendResultInfoAsJson(json_encode($pageNum));
     }
-    else {
+    else
+    {
         http_response_code(400);
     }
 

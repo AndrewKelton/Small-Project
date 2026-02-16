@@ -1,13 +1,16 @@
 // code.js
 
-/* Test this locally with python -m http.server 3000 */
+/* Test this locally with php -S localhost:8000 */
 
+// const urlBase = 'http://localhost:8000/';
 const urlBase = 'http://cop4331-pal.com/'; // change this to server address
 const extension = '.php';
 
 let userId = 0;
 let firstName = "";
 let lastName = "";
+let pageNum = 1; // page # to track current user's page in contacts
+let pageNumSearch = 1; // page # to track current user's page in the search results table
 const ids = [];
 
 /* event listeners when the page loads */
@@ -60,6 +63,7 @@ document.addEventListener("DOMContentLoaded", function() {
   if (searchForm) {
     searchForm.addEventListener("submit", function(e) {
       e.preventDefault();
+      pageNumSearch = 1; // start on 1st page for each new search
       displaySearchContactsTable();
     });
   }
@@ -87,6 +91,8 @@ function doLogin() {
   userId = 0;
   firstName = "";
   lastName = "";
+  pageNum = 1;
+  pageNumSearch = 1;
   
   let loginName = document.getElementById("loginName").value;
   let loginPassword = document.getElementById("loginPassword").value;
@@ -289,7 +295,7 @@ function displayContactsTable()
   document.getElementById("user_contacts_table").innerHTML = "";
 
   // json being sent out with the http request
-  let strObj = { UserID: userId };
+  let strObj = { UserID: userId, PageNumber: pageNum};
   let jsonPayload = JSON.stringify(strObj);
   
   // post http request
@@ -306,6 +312,7 @@ function displayContactsTable()
         
         // parse json response from api
         let jsonObjArr = JSON.parse(xhr.responseText);
+        console.log(jsonObjArr)
         let numContacts = jsonObjArr.length;
         let strHTML = "";
 
@@ -313,6 +320,13 @@ function displayContactsTable()
         strHTML = "<h2>Contacts List</h2>";
 
         if (numContacts == 0) { // enter if the contacts table is empty
+
+          if (pageNum > 1) { // enter when user has gone one page past the final page (represents an edge case where total contacts % 10 == 0)
+
+            // go back to previous page to correct for the user going one page past the final page
+            prevPage();
+            return;
+          }
 
           document.getElementById("user_contacts_table").innerHTML = "<p>You currently have no contacts listed!</p>";
           return;
@@ -324,7 +338,7 @@ function displayContactsTable()
           let col = recordCol - 1;
 
           // header labels for the contacts table
-          let headerLabelsArr = ["First Name", "Last Name", "Email", "Phone Number", "Click to Update or Delete"];
+          let headerLabelsArr = ["First Name", "Last Name", "Email", "Phone Number", "Date Created", "Click to Update or Delete"];
 
           // object (represents row of contacts table) key for database record
           let keyArr = Object.keys(jsonObjArr[0]);
@@ -364,6 +378,13 @@ function displayContactsTable()
 
           // end table
           strHTML += '</tbody></table>';
+          
+          // add pagination controls
+          strHTML += '<div class="pagination-controls" style="margin-top: 20px; text-align: center;">';
+          strHTML += '<button id="prevPageBtn" onclick="prevPage()" class="btn btn-secondary" ' + (pageNum === 1 ? 'disabled' : '') + '>Previous</button>';
+          strHTML += '<span style="margin: 0 15px;">Page ' + pageNum + '</span>';
+          strHTML += '<button id="nextPageBtn" onclick="nextPage()" class="btn btn-secondary" ' + (numContacts < 10 ? 'disabled' : '') + '>Next</button>';
+          strHTML += '</div>';
         } // end else
 
         // set markup for contacts table
@@ -386,8 +407,6 @@ function displayContactsTable()
 // Function to display the selected contact
 function displaySelectedContactTable()
 {
-  console.log("userId = " + userId);
-
   // clear contacts table upon opening page
   document.getElementById("selected_contact_table").innerHTML = "";
 
@@ -396,11 +415,11 @@ function displaySelectedContactTable()
   console.log("contactRecordID = " + contactRecordID);
 
   // json being sent out with the http request
-  let strObj = { UserID: userId };
+  let strObj = { ID: contactRecordID };
   let jsonPayload = JSON.stringify(strObj);
   
   // post http request
-  let url = urlBase + 'api/seecontacts' + extension;
+  let url = urlBase + 'api/selectedcontact' + extension;
   let xhr = new XMLHttpRequest();
   xhr.open("POST", url, true);
   xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
@@ -431,7 +450,7 @@ function displaySelectedContactTable()
           let col = recordCol - 2;
 
           // header labels for the contacts table
-          let headerLabelsArr = ["First Name", "Last Name", "Email", "Phone Number"];
+          let headerLabelsArr = ["First Name", "Last Name", "Email", "Phone Number", "Date Created"];
 
           // object (represents row of contacts table) key for database record
           let keyArr = Object.keys(jsonObjArr[0]);
@@ -452,26 +471,21 @@ function displaySelectedContactTable()
           // start table row
           strHTML += '<tbody><tr id="selected_contact_row">';         
 
-          // find the recordID
-          for (let i = 0; i < numContacts; i++) {
+          // get information from received json
 
-            if (jsonObjArr[i][keyArr[0]] == contactRecordID) {
+          let firstName = jsonObjArr[0][keyArr[2]];
+          let lastName = jsonObjArr[0][keyArr[3]];
+          let email = jsonObjArr[0][keyArr[4]];
+          let phone = jsonObjArr[0][keyArr[5]];
+          let dateCreated = jsonObjArr[0][keyArr[6]];
 
-              let firstName = jsonObjArr[i][keyArr[2]];
-              let lastName = jsonObjArr[i][keyArr[3]];
-              let email = jsonObjArr[i][keyArr[4]];
-              let phone = jsonObjArr[i][keyArr[5]];
-
-              // make editable 
-              strHTML += '<td contenteditable="true" data-field="firstName">' + firstName + '</td>';
-              strHTML += '<td contenteditable="true" data-field="lastName">' + lastName + '</td>';
-              strHTML += '<td contenteditable="true" data-field="email">' + email + '</td>';
-              strHTML += '<td contenteditable="true" data-field="phone">' + phone + '</td>'
-              
-              break;
-            }
-          }
-
+          // make editable 
+          strHTML += '<td contenteditable="true" data-field="firstName">' + firstName + '</td>';
+          strHTML += '<td contenteditable="true" data-field="lastName">' + lastName + '</td>';
+          strHTML += '<td contenteditable="true" data-field="email">' + email + '</td>';
+          strHTML += '<td contenteditable="true" data-field="phone">' + phone + '</td>';
+          strHTML += '<td contenteditable="false" data-field="dateCreated">' + dateCreated + '</td>';
+          
           // end table row
           strHTML += '</tr></tbody>';
 
@@ -627,7 +641,7 @@ function displaySearchContactsTable()
   }
 
   // json being sent out with the http request
-  let strObj = { userID: userId, firstName: firstName, lastName: lastName };
+  let strObj = { firstName: firstName, lastName: lastName, userID: userId, PageNumber: pageNumSearch };
   let jsonPayload = JSON.stringify(strObj);
 
   
@@ -653,6 +667,14 @@ function displaySearchContactsTable()
 
         if (numContacts == 0) { // enter if the search results json response is empty
 
+          // case for when the number of contacts is evenly divisible by 10 (i.e. the number of contacts per page)
+          if (pageNumSearch > 1) { // indicates that the 'next page' button went past the last page (represents an edge case where total contacts % 10 == 0)
+
+            // call prevPageSearch to go back to the final page
+            prevPageSearch();
+            return;
+          }
+
           document.getElementById("search_contacts_table").innerHTML = "<p>No matches were found in your contacts list!</p>";
           return;
         }
@@ -663,7 +685,7 @@ function displaySearchContactsTable()
           let col = recordCol - 1;
 
           // header labels for the search results table
-          let headerLabelsArr = ["First Name", "Last Name", "Email", "Phone Number", "Click to Update or Delete"];
+          let headerLabelsArr = ["First Name", "Last Name", "Email", "Phone Number", "Date Created", "Click to Update or Delete"];
 
           // object (represents row of search results table) key for database record
           let keyArr = Object.keys(jsonObjArr[0]);
@@ -703,6 +725,13 @@ function displaySearchContactsTable()
 
           // end table
           strHTML += '</tbody></table>';
+
+          // add pagination controls
+          strHTML += '<div class="pagination-controls" style="margin-top: 20px; text-align: center;">';
+          strHTML += '<button id="prevPageBtnSearch" onclick="prevPageSearch()" class="btn btn-secondary" ' + (pageNumSearch === 1 ? 'disabled' : '') + '>Previous</button>';
+          strHTML += '<span style="margin: 0 15px;">Page ' + pageNumSearch + '</span>';
+          strHTML += '<button id="nextPageBtnSearch" onclick="nextPageSearch()" class="btn btn-secondary" ' + (numContacts < 10 ? 'disabled' : '') + '>Next</button>';
+          strHTML += '</div>';
         } // end else
 
         // set markup for search results table
@@ -720,5 +749,36 @@ function displaySearchContactsTable()
   } 
   
 } // end function displaySearchContactsTable
+
+
+/* Pagination Functions */
+function nextPage() {
+  pageNum++;
+  displayContactsTable();
+}
+
+function prevPage() {
+  if (pageNum > 1) {
+    pageNum--;
+    displayContactsTable();
+  }
+}
+
+function nextPageSearch() {
+  pageNumSearch++;
+  displaySearchContactsTable();
+}
+
+function prevPageSearch() {
+  if (pageNumSearch > 1) {
+    pageNumSearch--;
+    displaySearchContactsTable();
+  }
+}
+
+
+
+
+
 
 

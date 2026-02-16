@@ -25,13 +25,6 @@
     $userID = $inData["userID"];
     $firstName = $inData["firstName"] ?? "";
     $lastName = $inData["lastName"] ?? "";
-    $pageNumber = max(1, $inData["PageNumber"] ?? 1);
-
-
-    // rows per page
-    $rowsPerPage = 10;
-    // pagination offset
-    $offsetRow = ($pageNumber - 1) * $rowsPerPage;
 
     // database connection
     $conn = new mysqli($host, $user, $pwd, $db);
@@ -47,29 +40,29 @@
     // Case 1: Both empty — return empty result
     if ($firstName === "" && $lastName === "") {
         header('Content-type: application/json');
-        echo json_encode([]);
+        echo json_encode(0);
         $conn->close();
         exit();
     }
 
     // Case 2: Only first name provided
     if ($firstName !== "" && $lastName === "") {
-        $stmt = $conn->prepare("SELECT * FROM Contacts WHERE UserID = ? AND LOWER(FirstName) LIKE ? LIMIT ? OFFSET ?");
+        $stmt = $conn->prepare("SELECT COUNT(*) FROM Contacts WHERE UserID = ? AND LOWER(FirstName) LIKE ?");
         $firstNameParam = "%" . strtolower($firstName) . "%";
-        $stmt->bind_param("isii", $userID, $firstNameParam, $rowsPerPage, $offsetRow);
+        $stmt->bind_param("is", $userID, $firstNameParam);
     }
     // Case 3: Only last name provided
     else if ($firstName === "" && $lastName !== "") {
-        $stmt = $conn->prepare("SELECT * FROM Contacts WHERE UserID = ? AND LOWER(LastName) LIKE ? LIMIT ? OFFSET ?");
+        $stmt = $conn->prepare("SELECT COUNT(*) FROM Contacts WHERE UserID = ? AND LOWER(LastName) LIKE ?");
         $lastNameParam = "%" . strtolower($lastName) . "%";
-        $stmt->bind_param("isii", $userID, $lastNameParam, $rowsPerPage, $offsetRow);
+        $stmt->bind_param("is", $userID, $lastNameParam);
     }
     // Case 4: Both first and last name provided
     else {
-        $stmt = $conn->prepare("SELECT * FROM Contacts WHERE UserID = ? AND (LOWER(FirstName) LIKE ? OR LOWER(LastName) LIKE ?) LIMIT ? OFFSET ?");
+        $stmt = $conn->prepare("SELECT COUNT(*) FROM Contacts WHERE UserID = ? AND (LOWER(FirstName) LIKE ? OR LOWER(LastName) LIKE ?)");
         $firstNameParam = "%" . strtolower($firstName) . "%";
         $lastNameParam = "%" . strtolower($lastName) . "%";
-        $stmt->bind_param("issii", $userID, $firstNameParam, $lastNameParam, $rowsPerPage, $offsetRow);
+        $stmt->bind_param("iss", $userID, $firstNameParam, $lastNameParam);
     }
 
     if (!$stmt) {
@@ -82,18 +75,17 @@
 
     $stmt->execute();
     $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    $pageCount = ceil(($row['COUNT(*)'] / 10));
 
-    // Collect all matching records
-    $contacts = [];
-    while ($row = $result->fetch_assoc()) {
-        $contacts[] = $row;
+    if ($stmt){
+        sendResultInfoAsJson(json_encode($pageCount));
+    }
+    else
+    {
+        http_response_code(400);
     }
 
     $stmt->close();
     $conn->close();
-
-    // Return results as JSON
-    header('Content-type: application/json');
-    echo json_encode($contacts);
-
 ?>
