@@ -1,5 +1,27 @@
 # Small Project Group 7
 
+## AI Assistance Disclosure
+
+This project was developed with assistance from generative AI tools:
+
+- **Tool**: Claude 4.5 Sonnet (GitHub Copilot)
+- **Dates**: February 11, 2026
+- **Scope**: CSS styling for sizing to keep web app usable on both
+  mobile and desktop devices
+- **Use**: Gave Claude the CSS types we were using and had it
+  implement the same types across all html files, instead of 
+  manually going in and changing them.
+
+- **Tool**: Claude 4.5 Sonnet (GitHub Copilot)
+- **Dates**: February 1, 2026
+- **Scope**: GitHub deploy workflow
+- **Use**: Generated the deploy.yml file to deploy our site to
+  our server using Claude.
+
+All AI-generated code was reviewed, tested, and modified to meet 
+assignment requirements. Final implementation reflects my understanding 
+of the concepts.
+
 ## Git Workflow
 
 Follow this workflow when contributing to the project:
