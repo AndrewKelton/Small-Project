@@ -58,7 +58,8 @@
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0){
-        http_response_code(409);
+        # http_response_code(409);
+        header("HTTP/1.1 409 Conflict");
         returnWithError("Username already exists!");
         $stmt->close();
         $conn->close();
