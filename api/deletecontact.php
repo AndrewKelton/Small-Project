@@ -35,6 +35,7 @@
     }
     // Validation
     if (empty($contactID)) {
+        http_response_code(400);
         returnWithError("Contact ID is required");
         $conn->close();
         exit();
@@ -46,6 +47,7 @@
     $result = $stmt->get_result();
 
     if ($result->num_rows === 0) {
+        http_response_code(404);
         returnWithError("Contact not found");
         $stmt->close();
         $conn->close();
@@ -61,9 +63,9 @@
     if ($stmt->execute() === TRUE) {
         returnWithError("");
     } else {
+        http_response_code(500);
         returnWithError("Failed to delete contact");
     }
-
     $stmt->close();
     $conn->close();
 ?>

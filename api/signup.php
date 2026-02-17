@@ -58,6 +58,7 @@
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0){
+        http_response_code(409);
         returnWithError("Username already exists!");
         $stmt->close();
         $conn->close();

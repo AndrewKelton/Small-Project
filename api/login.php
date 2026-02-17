@@ -56,6 +56,7 @@
         returnUserInfo( $row['ID'], $row['FirstName'], $row['LastName']);
     }
     else {
+        http_response_code(401);
         $err = "No records found";
         $retValue = '{"id":0,"firstName":"","lastName":"","error":"' . $err . '"}';
         sendResultInfoAsJson($retValue);
