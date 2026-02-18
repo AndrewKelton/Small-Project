@@ -58,6 +58,7 @@
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0){
+        http_response_code(409);
         returnWithError("Username already exists!");
         $stmt->close();
         $conn->close();
@@ -68,11 +69,16 @@
     $stmt = $conn->prepare("INSERT INTO Users (FirstName, LastName, Login, Password) VALUES (?, ?, ?, ?)");
     $stmt->bind_param("ssss", $firstName, $lastName, $login, $password);
 
-    if ($stmt->execute())
+    if ($stmt->execute()){
         returnUserInfo( $conn->insert_id, $firstName, $lastName ); 
-    else 
+        $stmt->close();
+        $conn->close();
+        exit();
+    }
+    else { 
+        http_response_code(400);
         returnWithError("Error: Failed to create new account");
-
+    }
     $stmt->close();
     $conn->close();
 
