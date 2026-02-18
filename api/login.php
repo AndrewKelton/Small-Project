@@ -54,6 +54,9 @@
 
     if ($row = $result->fetch_assoc()) {
         returnUserInfo( $row['ID'], $row['FirstName'], $row['LastName']);
+        $stmt->close();
+        $conn->close();
+        exit();
     }
     else {
         $err = "No records found";
