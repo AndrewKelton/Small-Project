@@ -47,13 +47,16 @@
     $stmt = $conn->prepare("INSERT INTO Contacts (UserID, FirstName, LastName, Email, Phone) VALUES (?, ?, ?, ?, ?)");
     $stmt->bind_param("issss", $userID, $firstName, $lastName, $email, $phone);
 
-    if ($stmt->execute() === TRUE) 
+    if ($stmt->execute() === TRUE) {
         returnContactInfo($conn->insert_id, $firstName, $lastName, $email, $phone);
-    else 
+        $stmt->close();
+        $conn->close();
+        exit();
+    }
+    else {
         http_response_code(400);
-    
+    }
     $stmt->close();
     $conn->close();
-
 
 ?>
