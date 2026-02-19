@@ -18,6 +18,11 @@ This project was developed with assistance from generative AI tools:
 - **Use**: Generated the deploy.yml file to deploy our site to
   our server using Claude.
 
+- **Tool**: Chat GPT 5.2
+- **Dates**: February 8, 2026
+- **Scope**: Web app logo image
+- **Use**: Generate logo image of dog for the web app header
+
 All AI-generated code was reviewed, tested, and modified to meet 
 assignment requirements. Final implementation reflects my understanding 
 of the concepts.

@@ -62,6 +62,9 @@
 
     if ($stmt->execute() === TRUE) {
         returnWithError("");
+        $stmt->close();
+        $conn->close();
+        exit();
     } else {
         http_response_code(500);
         returnWithError("Failed to delete contact");
