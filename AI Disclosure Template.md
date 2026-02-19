@@ -52,3 +52,11 @@ def binary_search(arr, target):
 - Don't over-cite to the point where comments obscure your code
 - Don't under-disclose by omitting substantial AI contributions
 
+## AI used to Generate Web App Logo Image
+- **Tool**: Chat GPT 5.2
+- **Dates**: February 8, 2026
+- **Scope**: Web app logo image
+- **Use**: Generate logo image of dog for the web app header
+
+
+
