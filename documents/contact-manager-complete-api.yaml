@@ -1,0 +1,520 @@
+swagger: '2.0'
+info:
+  description: This is the API documentation for the Contact Manager Application
+  version: 1.0.0
+  title: Contact Manager API
+  contact:
+    email: your-email@ucf.edu
+
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+paths:
+  /login.php:
+    post:
+      tags:
+      - Users
+      summary: Logs in to the Contact Manager app
+      operationId: login
+      description: Authenticates user credentials and returns user information
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: loginItem
+        description: Login credentials
+        schema:
+          $ref: '#/definitions/Login'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/LoginResponse'
+        400:
+          description: Database Error
+        401:
+          description: Invalid credentials - No records found
+
+  /signup.php:
+    post:
+      tags:
+      - Users
+      summary: Creates a new user account
+      operationId: signup
+      description: Registers a new user in the Contact Manager app
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: signupItem
+        description: New user information
+        schema:
+          $ref: '#/definitions/Signup'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/SignupResponse'
+        400:
+          description: Database Error or Validation Error (missing fields or password too short)
+        409:
+          description: Username already exists
+
+  /addcontact.php:
+    post:
+      tags:
+      - Contacts
+      summary: Adds a contact to be registered to user
+      operationId: add_contact
+      description: Adds a contact with given information to be registered to user
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: contactItem
+        description: Add contact
+        schema:
+          $ref: '#/definitions/AddContact'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/ContactResponse'
+        400:
+          description: Database Error or Validation Error
+
+  /updatecontact.php:
+    post:
+      tags:
+      - Contacts
+      summary: Updates the selected contact with new information
+      operationId: update_contact
+      description: Updates the selected contact with new information
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: contactItem
+        description: Update contact
+        schema:
+          $ref: '#/definitions/UpdateContact'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/ContactResponse'
+        400:
+          description: Contact not found or Database Error
+
+  /deletecontact.php:
+    post:
+      tags:
+      - Contacts
+      summary: Deletes a contact
+      operationId: delete_contact
+      description: Removes a contact from the database by contact ID
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: deleteItem
+        description: Contact to delete
+        schema:
+          $ref: '#/definitions/DeleteContact'
+      responses:
+        200:
+          description: OK
+        400:
+          description: Contact ID required or Database Error
+        404:
+          description: Contact not found
+        500:
+          description: Failed to delete contact
+
+  /seecontacts.php:
+    post:
+      tags:
+      - Contacts
+      summary: Shows all contacts registered to user
+      operationId: see_contacts
+      description: Shows all contacts registered to user with pagination support
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: seeContactsItem
+        description: User ID and pagination
+        schema:
+          $ref: '#/definitions/SeeContacts'
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ContactInfo'
+        400:
+          description: Database Error
+
+  /selectedcontact.php:
+    post:
+      tags:
+      - Contacts
+      summary: Gets a specific contact by ID
+      operationId: selected_contact
+      description: Retrieves a specific contact by its ID
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: selectedContactItem
+        description: Contact ID
+        schema:
+          $ref: '#/definitions/SelectedContact'
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ContactInfo'
+        400:
+          description: Database Error
+
+  /searchcontact.php:
+    post:
+      tags:
+      - Contacts
+      summary: Searches for contacts
+      operationId: search_contacts
+      description: Searches contacts by first name and/or last name with pagination support
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: searchItem
+        description: Search criteria
+        schema:
+          $ref: '#/definitions/SearchContact'
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ContactInfo'
+        400:
+          description: Database Error
+        500:
+          description: Server Error - Failed to prepare statement
+
+  /countpages.php:
+    post:
+      tags:
+      - Pagination
+      summary: Counts total pages for user's contacts
+      operationId: count_pages
+      description: Returns the total number of pages (10 contacts per page) for a user
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: countPagesItem
+        description: User ID
+        schema:
+          $ref: '#/definitions/CountPages'
+      responses:
+        200:
+          description: OK
+          schema:
+            type: integer
+            example: 5
+        400:
+          description: Database Error
+
+  /countpagessearch.php:
+    post:
+      tags:
+      - Pagination
+      summary: Counts total pages for search results
+      operationId: count_pages_search
+      description: Returns the total number of pages (10 contacts per page) for search results
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: countPagesSearchItem
+        description: Search criteria
+        schema:
+          $ref: '#/definitions/CountPagesSearch'
+      responses:
+        200:
+          description: OK
+          schema:
+            type: integer
+            example: 3
+        400:
+          description: Database Error
+        500:
+          description: Server Error - Failed to prepare statement
+
+definitions:
+  Login:
+    type: object
+    required:
+    - login
+    - password
+    properties:
+      login:
+        type: string
+        example: "johndoe"
+      password:
+        type: string
+        example: "mypassword123"
+
+  LoginResponse:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 5
+      firstName:
+        type: string
+        example: "John"
+      lastName:
+        type: string
+        example: "Doe"
+      error:
+        type: string
+        example: ""
+
+  Signup:
+    type: object
+    required:
+    - firstName
+    - lastName
+    - login
+    - password
+    properties:
+      firstName:
+        type: string
+        example: "John"
+      lastName:
+        type: string
+        example: "Doe"
+      login:
+        type: string
+        example: "johndoe"
+      password:
+        type: string
+        example: "mypassword123"
+
+  SignupResponse:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 10
+      firstName:
+        type: string
+        example: "John"
+      lastName:
+        type: string
+        example: "Doe"
+      error:
+        type: string
+        example: ""
+
+  AddContact:
+    type: object
+    required:
+    - userID
+    - firstName
+    - lastName
+    properties:
+      userID:
+        type: integer
+        example: 5
+      firstName:
+        type: string
+        example: "Jane"
+      lastName:
+        type: string
+        example: "Smith"
+      email:
+        type: string
+        example: "jane.smith@email.com"
+      phone:
+        type: string
+        example: "5551234567"
+
+  UpdateContact:
+    type: object
+    required:
+    - contactID
+    - userID
+    - firstName
+    - lastName
+    - email
+    - phone
+    properties:
+      contactID:
+        type: integer
+        example: 15
+      userID:
+        type: integer
+        example: 5
+      firstName:
+        type: string
+        example: "Jane"
+      lastName:
+        type: string
+        example: "Smith"
+      email:
+        type: string
+        example: "jane.smith@email.com"
+      phone:
+        type: string
+        example: "5551234567"
+
+  ContactResponse:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 15
+      firstName:
+        type: string
+        example: "Jane"
+      lastName:
+        type: string
+        example: "Smith"
+      email:
+        type: string
+        example: "jane.smith@email.com"
+      phone:
+        type: string
+        example: "5551234567"
+      error:
+        type: string
+        example: ""
+
+  DeleteContact:
+    type: object
+    required:
+    - contactID
+    properties:
+      contactID:
+        type: integer
+        example: 15
+
+  SeeContacts:
+    type: object
+    required:
+    - UserID
+    properties:
+      UserID:
+        type: integer
+        example: 5
+      PageNumber:
+        type: integer
+        example: 1
+
+  SelectedContact:
+    type: object
+    required:
+    - ID
+    properties:
+      ID:
+        type: integer
+        example: 15
+
+  SearchContact:
+    type: object
+    required:
+    - userID
+    properties:
+      userID:
+        type: integer
+        example: 5
+      firstName:
+        type: string
+        example: "Jane"
+      lastName:
+        type: string
+        example: "Smith"
+      PageNumber:
+        type: integer
+        example: 1
+
+  CountPages:
+    type: object
+    required:
+    - UserID
+    properties:
+      UserID:
+        type: integer
+        example: 5
+
+  CountPagesSearch:
+    type: object
+    required:
+    - userID
+    properties:
+      userID:
+        type: integer
+        example: 5
+      firstName:
+        type: string
+        example: "Jane"
+      lastName:
+        type: string
+        example: "Smith"
+
+  ContactInfo:
+    type: object
+    properties:
+      ID:
+        type: integer
+        example: 15
+      UserID:
+        type: integer
+        example: 5
+      FirstName:
+        type: string
+        example: "Jane"
+      LastName:
+        type: string
+        example: "Smith"
+      Email:
+        type: string
+        example: "jane.smith@email.com"
+      Phone:
+        type: string
+        example: "5551234567"
+
+host: cop4331-pal.com
+basePath: /api
+schemes:
+- http
