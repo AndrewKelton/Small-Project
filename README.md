@@ -28,6 +28,11 @@ This project was developed with assistance from generative AI tools:
 - **Scope**: Specific design logic for the API. Helped make the specific SQL logic code for login, signup, deletecontact, and addcontact. Also implemented it for partial search logic in the 4 cases in searchcontact.php.
 - **Use**: Generated code for specific logic parts across the API files. Also helped me understand the logic behind PHP code and how it is implemented. Claude aided me in my debugging of why incorrect error codes were being returned and helped me find parts across login, signup, addcontact, and deletecontact where I did not fully complete the logic, causing incorrect 200 codes instead of 400, 409, 500, etc.
 
+**Tool**: ChatGPT-5.2
+**Dates**: January 19-21; February 2-4
+**Scope**: Improve understanding of MySQL databases and commands
+**Use**: Generated 100 test entries in contacts table, verified safety of executing commands on a deployed database to edit tables, and asked for clarification on how primary and foreign keys work.
+
 All AI-generated code was reviewed, tested, and modified to meet 
 assignment requirements. Final implementation reflects my understanding 
 of the concepts.
