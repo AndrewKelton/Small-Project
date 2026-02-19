@@ -134,7 +134,18 @@ function doLogin() {
 				saveCookie();
 	
 				window.location.href = "contacts.html";
-			}
+			} 
+      // failed login
+      else if (this.readyState == 4 && this.status == 401) {
+				let jsonObject = JSON.parse(xhr.responseText);
+				userId = jsonObject.id;
+
+				if( userId < 1 ) {
+					document.getElementById("loginResult").innerHTML = "User/Password combination incorrect";
+					console.log("Login failed: " + loginName + " " + loginPassword);
+					return;
+				}
+      }
 		};
     console.log("Sending:", jsonPayload);
 		xhr.send(jsonPayload);
