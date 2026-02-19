@@ -14,9 +14,10 @@ This project was developed with assistance from generative AI tools:
 
 - **Tool**: Claude 4.5 Sonnet (GitHub Copilot)
 - **Dates**: February 1, 2026
-- **Scope**: GitHub deploy workflow
+- **Scope**: GitHub deploy workflow and README documentation
 - **Use**: Generated the deploy.yml file to deploy our site to
-  our server using Claude.
+  our server. Also formatted and structured the README.md file based on
+  provided content outline and workflow requirements.
 
 - **Tool**: Chat GPT 5.2
 - **Dates**: February 8, 2026
