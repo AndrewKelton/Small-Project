@@ -23,6 +23,11 @@ This project was developed with assistance from generative AI tools:
 - **Scope**: Web app logo image
 - **Use**: Generate logo image of dog for the web app header
 
+- **Tool**: Claude 4.5 Sonnet (Anthropic, claude.ai)
+- **Dates**: January 20 - 21, 2026; February 11 - 14
+- **Scope**: Specific design logic for the API. Helped make the specific SQL logic code for login, signup, deletecontact, and addcontact. Also implemented it for partial search logic in the 4 cases in searchcontact.php.
+- **Use**: Generated code for specific logic parts across the API files. Also helped me understand the logic behind PHP code and how it is implemented. Claude aided me in my debugging of why incorrect error codes were being returned and helped me find parts across login, signup, addcontact, and deletecontact where I did not fully complete the logic, causing incorrect 200 codes instead of 400, 409, 500, etc.
+
 All AI-generated code was reviewed, tested, and modified to meet 
 assignment requirements. Final implementation reflects my understanding 
 of the concepts.
