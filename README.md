@@ -14,14 +14,25 @@ This project was developed with assistance from generative AI tools:
 
 - **Tool**: Claude 4.5 Sonnet (GitHub Copilot)
 - **Dates**: February 1, 2026
-- **Scope**: GitHub deploy workflow
+- **Scope**: GitHub deploy workflow and README documentation
 - **Use**: Generated the deploy.yml file to deploy our site to
-  our server using Claude.
+  our server. Also formatted and structured the README.md file based on
+  provided content outline and workflow requirements.
 
 - **Tool**: Chat GPT 5.2
 - **Dates**: February 8, 2026
 - **Scope**: Web app logo image
 - **Use**: Generate logo image of dog for the web app header
+
+- **Tool**: Claude 4.5 Sonnet (Anthropic, claude.ai)
+- **Dates**: January 20 - 21, 2026; February 11 - 14
+- **Scope**: Specific design logic for the API. Helped make the specific SQL logic code for login, signup, deletecontact, and addcontact. Also implemented it for partial search logic in the 4 cases in searchcontact.php.
+- **Use**: Generated code for specific logic parts across the API files. Also helped me understand the logic behind PHP code and how it is implemented. Claude aided me in my debugging of why incorrect error codes were being returned and helped me find parts across login, signup, addcontact, and deletecontact where I did not fully complete the logic, causing incorrect 200 codes instead of 400, 409, 500, etc.
+
+**Tool**: ChatGPT-5.2
+**Dates**: January 19-21; February 2-4
+**Scope**: Improve understanding of MySQL databases and commands
+**Use**: Generated 100 test entries in contacts table, verified safety of executing commands on a deployed database to edit tables, and asked for clarification on how primary and foreign keys work.
 
 All AI-generated code was reviewed, tested, and modified to meet 
 assignment requirements. Final implementation reflects my understanding 
